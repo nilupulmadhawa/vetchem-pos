@@ -11,7 +11,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
                         <li class="breadcrumb-item active">Invoice</li>
                     </ol>
                 </div><!-- /.col -->
@@ -30,8 +30,8 @@
                         <input type="text" class="form-control" id="Name" placeholder="Enter Name">
                     </div>
                     <div class="form-group col-md-6">
-                        <label for="Barcode">Code</label>
-                        <input type="text" class="form-control" id="Barcode" placeholder="Barcode">
+                        <label for="Code">Code</label>
+                        <input type="text" class="form-control" id="Code" placeholder="Code">
                     </div>
                     </div>
                     <div class="form-group ">
@@ -39,6 +39,16 @@
                         <div class="d-flex">
                         <input type="text" class="form-control col-md-10" id="GenerateBarcode" placeholder="Barcode">
                         <a class="btn btn-primary col-md-2 ml-1" href="#" role="button">Generate Barcode</a>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-md-6">
+                            <label for="Quantity">Quantity</label>
+                            <input type="text" class="form-control" id="Quantity" placeholder="Enter Quantity">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="LowQuantity">Minimum Quantity</label>
+                            <input type="text" class="form-control" id="LowQuantity" placeholder="Enter Minimum Quantity Limit">
                         </div>
                     </div>
                     <div class="form-group">
