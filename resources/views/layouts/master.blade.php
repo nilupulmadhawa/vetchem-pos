@@ -27,8 +27,7 @@
     <!-- summernote -->
     <link rel=" stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
-    <script defer src=" {{ mix('js/app.js') }}">
-    </script>
+    <script defer src=" {{ mix('js/app.js') }}"></script>
 
 </head>
 
@@ -82,7 +81,7 @@
                     <!-- Notifications Dropdown Menu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
+                            <i class="fas fa-bell"></i>
                             <span class="badge badge-warning navbar-badge">15</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
@@ -217,7 +216,7 @@
                             <hr style="border-color:#ffff; border: size 3px;" />
                             <li class="nav-item">
 
-                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():;">
+                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():document.getElementById('logout-form');">
                                     <i class="nav-icon fas fa-sign-out-alt"></i>
                                     {{ __('Logout') }}
                                 </a>

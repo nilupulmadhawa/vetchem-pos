@@ -31,7 +31,7 @@
 
                     <div class="card-body">
                     <div class="input-group">
-                        <button class="btn input-group-text" type="button"><font-awesome-icon icon="fa-solid fa-barcode" /></button>
+                        <button class="btn input-group-text" type="button"><i class="fa fa-h-square" aria-hidden="true"></i></button>
                         <button class="btn input-group-text" type="button"><i class="fa fa-h-square" aria-hidden="true"></i></button>
                         <button class="btn input-group-text" type="button"><i class="fa fa-tag" aria-hidden="true"></i></button>
                         <div class="input-group-prepend">
