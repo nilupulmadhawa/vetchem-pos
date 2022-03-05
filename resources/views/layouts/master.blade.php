@@ -169,10 +169,18 @@
                                 </router-link>
                             </li>
                             <li class="nav-item menu-open">
-                                <router-link active-class="active" to="/productlist" class="nav-link ">
+                                <router-link active-class="active" to="/product-list" class="nav-link ">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
                                         Product List
+                                    </p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item menu-open">
+                                <router-link active-class="active" to="/product-add" class="nav-link ">
+                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                                    <p>
+                                        Product Add
                                     </p>
                                 </router-link>
                             </li>

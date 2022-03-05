@@ -1,7 +1,7 @@
 import Invoice from './components/Invoice.vue';
 import Dashboard from './components/Dashboard.vue';
 import ProductList from './components/Product-List.vue';
-
+import ProductAdd from './components/Product-Add.vue';
 export const routes = [
     {
         path: '/invoice',
@@ -14,8 +14,14 @@ export const routes = [
         name: "Dashboard"
     },
     {
-        path: '/productlist',
+        path: '/product-list',
         component: ProductList,
         name: "ProductList"
+    },
+
+    {
+        path: '/product-add',
+        component: ProductAdd,
+        name: "ProductAdd"
     }
 ];
