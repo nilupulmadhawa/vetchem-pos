@@ -160,7 +160,7 @@
                         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                             <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-                            <li class="nav-item menu-open">
+                            <li class="nav-item">
                                 <router-link active-class="active" to="/dashboard" class="nav-link ">
                                     <i class="nav-icon fas fa-tachometer-alt"></i>
                                     <p>
@@ -168,32 +168,61 @@
                                     </p>
                                 </router-link>
                             </li>
-                            <li class="nav-item menu-open">
-                                <router-link active-class="active" to="/productlist" class="nav-link ">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
-                                    <p>
-                                        Product List
-                                    </p>
-                                </router-link>
-                            </li>
-                            <li class="nav-item menu-open">
-                                <router-link active-class="active" to="/invoice" class="nav-link ">
-                                    <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-file-invoice"></i>
                                     <p>
                                         Invoice
+                                        <i class="fas fa-angle-left right"></i>
                                     </p>
-                                </router-link>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <router-link active-class="active" to="/billing" class="nav-link ">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Billing</p>
+                                        </router-link>
+                                    </li>
+                                    <li class="nav-item">
+                                        <router-link active-class="active" to="/invoices" class="nav-link ">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Invoice List</p>
+                                        </router-link>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="nav-icon fas fa-box"></i>
+                                    <p>
+                                        Product
+                                        <i class="fas fa-angle-left right"></i>
+                                    </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <router-link active-class="active" to="/product-add" class="nav-link ">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Add Product</p>
+                                        </router-link>
+                                    </li>
+                                    <li class="nav-item">
+                                        <router-link active-class="active" to="/product-list" class="nav-link ">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Product List</p>
+                                        </router-link>
+                                    </li>
+                                </ul>
                             </li>
                             <hr style="border-color:#ffff; border: size 3px;" />
-                            <li class="nav-item menu-open">
+                            <li class="nav-item">
 
-                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
+                                <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():document.getElementById('logout-form');">
                                     <i class="nav-icon fas fa-sign-out-alt"></i>
                                     {{ __('Logout') }}
                                 </a>
 
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none" onsubmit="return confirm('Do you want to logout?');">
                                     @csrf
                                 </form>
                             </li>
@@ -226,6 +255,7 @@
         </aside>
         <!-- /.control-sidebar -->
     </div>
+
     <!-- ./wrapper -->
 
     <!-- jQuery -->
