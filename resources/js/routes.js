@@ -1,12 +1,18 @@
-import Invoice from './components/Invoice.vue';
+import Invoices from './components/Invoices.vue';
+import Billing from './components/Billing.vue';
 import Dashboard from './components/Dashboard.vue';
 import ProductList from './components/Product-List.vue';
 import ProductAdd from './components/Product-Add.vue';
 export const routes = [
     {
-        path: '/invoice',
-        component: Invoice,
-        name: "Invoice"
+        path: '/invoices',
+        component: Invoices,
+        name: "Invoices"
+    },
+    {
+        path: '/billing',
+        component: Billing,
+        name: "Billing"
     },
     {
         path: '/dashboard',
