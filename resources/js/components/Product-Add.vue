@@ -34,21 +34,57 @@
                         <input type="text" class="form-control" id="Code" placeholder="Code">
                     </div>
                     </div>
-                    <div class="form-group ">
-                        <label for="GenerateBarcode">Barcode</label>
-                        <div class="d-flex">
-                        <input type="text" class="form-control col-md-10" id="GenerateBarcode" placeholder="Barcode">
-                        <a class="btn btn-primary col-md-2 ml-1" href="#" role="button">Generate Barcode</a>
+                    <div class="d-flex">
+                        <div class="form-group col-md-12">
+                            <label for="tags-basic">Barcode</label>
+                            <b-form-tags input-id="tags-basic" v-model="values"></b-form-tags>
+                            <a class="btn btn-primary btn-sm mt-1" href="#" role="button">Generate Barcode</a>
                         </div>
                     </div>
                     <div class="d-flex">
                         <div class="form-group col-md-6">
                             <label for="Quantity">Quantity</label>
-                            <input type="text" class="form-control" id="Quantity" placeholder="Enter Quantity">
+                            <input type="number" class="form-control" id="Quantity" placeholder="Enter Quantity">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="LowQuantity">Minimum Quantity</label>
-                            <input type="text" class="form-control" id="LowQuantity" placeholder="Enter Minimum Quantity Limit">
+                            <input type="number" class="form-control" id="LowQuantity" placeholder="Enter Minimum Quantity Limit">
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-md-6">
+                        <label for="Cost" class="col-md-12">Cost</label>
+                        <div class="input-group mb-3 col-md-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rs:</span>
+                            </div>
+                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" id="Cost">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                        </div>
+                        </div>
+                        <div class="form-group col-md-6">
+                        <label for="SalePrice" class="col-md-12">Sale Price</label>
+                        <div class="input-group mb-3 col-md-12">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Rs:</span>
+                            </div>
+                            <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)" id="SalePrice">
+                            <div class="input-group-append">
+                                <span class="input-group-text">.00</span>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <div class="d-flex">
+                        <div class="form-group col-md-6">
+                            <label for="ExpireDate">Expire Date</label>
+                            <input type="date" class="form-control" id="ExpireDate" placeholder="Expire Date">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="ManufactureDate">Manufacture Date</label>
+                            <input type="date" class="form-control" id="ManufactureDate" placeholder="Enter Sale Price">
                         </div>
                     </div>
                     <div class="form-group">
@@ -56,6 +92,9 @@
                         <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
                     </div>
                 </form>
+                <div>
+                    <button type="button" class="btn btn-primary btn-lg-sm btn-block">Submit</button>
+                </div>
         </div>
     </div>
 
@@ -64,8 +103,18 @@
     </section>
 </template>
 
-<script>
+<script >
+// import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap-vue/dist/bootstrap-vue.css'
     export default {
-
+        data() {
+            return {
+                values: []
+            }
+        }
     }
 </script>
+
+<style scoped>
+
+</style>
