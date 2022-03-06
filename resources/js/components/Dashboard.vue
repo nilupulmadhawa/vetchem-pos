@@ -37,6 +37,8 @@
 
 <script>
     export default {
-
+mounted() {
+    console.log(process.env.MIX_API_URL );
+  },
     }
 </script>
