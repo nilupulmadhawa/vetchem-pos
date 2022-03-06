@@ -3,6 +3,7 @@ import Billing from './components/Billing.vue';
 import Dashboard from './components/Dashboard.vue';
 import ProductList from './components/Product-List.vue';
 import ProductAdd from './components/Product-Add.vue';
+import Productlowquantity from './components/Product-Low-Quantity.vue';
 export const routes = [
     {
         path: '/invoices',
@@ -29,5 +30,11 @@ export const routes = [
         path: '/product-add',
         component: ProductAdd,
         name: "ProductAdd"
+    },
+
+    {
+        path: '/Product-Low-Quantity-add',
+        component: Productlowquantity,
+        name: "Productlowquantity"
     }
 ];
