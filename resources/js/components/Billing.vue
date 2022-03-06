@@ -27,6 +27,10 @@
                     <input ref="barcodeInput" type="text" class="form-control" v-model="inputBarcode" autofocus v-on:change="selectByBarcode($event)">
                 </div>
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
+                    <label class="m-3">Barcode</label>
+                    <input ref="barcodeInput" type="text" class="form-control" >
+                </div>
+                <div class="form-group d-flex flex-row col-md-4 align-items-center">
                     <label class="m-3">Name</label>
                     <!-- <select class="select2" style="width: 100%;" @change="$emit('barcode', optionsArray)">
                         <option value="" disabled selected>Search By Name..</option>
