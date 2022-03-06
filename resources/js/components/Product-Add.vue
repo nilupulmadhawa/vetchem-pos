@@ -7,12 +7,12 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Dashboard</h1>
+                    <h1 class="m-0">Product Add</h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-                        <li class="breadcrumb-item active">Invoice</li>
+                        <li class="breadcrumb-item"><a href="#">Home</a></li>
+                        <li class="breadcrumb-item active">Product Add</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -44,7 +44,7 @@
                     <div class="d-flex">
                         <div class="form-group col-md-6">
                             <label for="Quantity">Quantity</label>
-                            <input type="number" class="form-control" id="Quantity" placeholder="Enter Quantity">
+                            <input type="number" class="form-control" id="Quantity" min="0" placeholder="Enter Quantity">
                         </div>
                         <div class="form-group col-md-6">
                             <label for="LowQuantity">Minimum Quantity</label>
@@ -115,6 +115,21 @@
     }
 </script>
 
-<style scoped>
+<style >
+.align-items-baseline {
+    -webkit-align-items: baseline !important;
+    -ms-flex-align: baseline !important;
+    align-items: center !important;
+    font-weight: normal;
+    font-size: 16px;
+    padding: 3px !important;
+    /*font-family: Monospace;*/
+    /*padding: 4px;*/
+    margin-right: 4px;
+}
+.align-items-baseline span{
+    padding: 0 5px 0 5px;
+}
+
 
 </style>
