@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('lot_infos', function (Blueprint $table) {
             $table->id();
-            $table->integer('qty', 10);
+            $table->string('qty_type', 10);
+            $table->decimal('qty', 10,3);
             $table->date('exp');
             $table->date('mfd');
             $table->decimal('cost',10, 2);

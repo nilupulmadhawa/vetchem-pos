@@ -43,18 +43,29 @@
                     </div>
                     <div class="d-flex">
                         <div class="form-group col-md-6">
-                            <label for="Quantity">Quantity</label>
-                            <input type="number" class="form-control" id="Quantity" min="0" placeholder="Enter Quantity">
+                            <label for="Quantity" >Quantity</label>
+                        <div class="input-group col-md-12 p-0">
+                            <div class="input-group-prepend">
+                                <select class="form-control col-md-4">
+                                    <option class="dropdown-item">Action</option>
+                                    <option class="dropdown-item">Another action</option>
+                                    <option class="dropdown-item">Something else here</option>
+                                </select>
+                                <input type="text" class="form-control col-md-6" aria-label="Text input with dropdown button" id="Quantity" placeholder="Enter Quantity">
+                            </div>
+                        </div>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="LowQuantity">Minimum Quantity</label>
-                            <input type="number" class="form-control" id="LowQuantity" placeholder="Enter Minimum Quantity Limit">
+                            <label for="MinimumQuantity" >Minimum Quantity</label>
+                            <div class="input-group col-md-12 p-0">
+                                    <input type="text" class="form-control" aria-label="Text input with dropdown button" id="MinimumQuantity" placeholder="Enter Minimum Quantity Limit">
+                            </div>
                         </div>
                     </div>
                     <div class="d-flex">
                         <div class="form-group col-md-6">
-                        <label for="Cost" class="col-md-12">Cost</label>
-                        <div class="input-group mb-3 col-md-12">
+                        <label for="Cost" class="col-md-12 p-0">Cost</label>
+                        <div class="input-group mb-3 col-md-12 p-0">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rs:</span>
                             </div>
@@ -65,8 +76,8 @@
                         </div>
                         </div>
                         <div class="form-group col-md-6">
-                        <label for="SalePrice" class="col-md-12">Sale Price</label>
-                        <div class="input-group mb-3 col-md-12">
+                        <label for="SalePrice" class="col-md-12 p-0">Sale Price</label>
+                        <div class="input-group mb-3 col-md-12 p-0">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Rs:</span>
                             </div>
