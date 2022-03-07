@@ -35,7 +35,14 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
+         dd($request->all());
+//        $product = new Product;
+//        $validated = $request->validate([
+//            'name' => 'required|max:100|unique:products,productname',
+//
+//        ]);
+//        $product->name = $request->name;
+//        $product->save();
     }
 
     /**

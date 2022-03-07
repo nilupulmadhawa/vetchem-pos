@@ -127,7 +127,7 @@
             return{
                 name:"",
                 code:"",
-                barcode:"",
+                barcode:[],
                 qty_type:"",
                 qty:0,
                 min_qty:0,
@@ -141,26 +141,27 @@
 
         methods:{
             submitForm(){
-                console.log("test");
+                // console.log("test");
                 // console.log(this.name);
-                // console.log(this.qty_type, this.qty);
+                // console.log(this.code);
                 // let validated = true;
-
-                if(this.name != '' && this.code!='' && this.barcode!='' && this.qty_type!='' && this.qty!=0 && this.min_qty!=0 && this.s_price!=0 && this.exp!=''){
-                    axios.post('api/product',{
-                        name:this.name,
-                        code:this.code,
-                        barcode:this.barcode,
-                        qty_type:this.qty_type,
-                        qty:this.qty,
-                        min_qty:this.min_qty,
-                        cost:this.cost,
-                        s_price:this.s_price,
-                        exp:this.exp,
-                        mfd:this.mfd,
-                        description:this.description
-
-                            .then(response =>{
+                if(this.name != '' && this.code!='' ){
+                    // console.log('aaa')
+                // && this.barcode!='' && this.qty_type!='' && this.qty!=0 && this.min_qty!=0 && this.s_price!=0 && this.exp!=''
+                    axios.post('/api/product', {
+                        name: this.name,
+                        code: this.code,
+                        barcode: this.barcode,
+                        qty_type: this.qty_type,
+                        qty: this.qty,
+                        min_qty: this.min_qty,
+                        cost: this.cost,
+                        s_price: this.s_price,
+                        exp: this.exp,
+                        mfd: this.mfd,
+                        description: this.description,
+                    })
+                        .then(response =>{
                                 if (response.data.isAdded) {
                                     alert('Product insertion success.');
                                         name="",
@@ -182,8 +183,6 @@
                             .catch(error =>{
                                 console.log(error);
                             })
-
-                    })
                 }
                 else{
                     alert('Please enter all fileds!');
