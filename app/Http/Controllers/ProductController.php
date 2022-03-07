@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\LotInfo;
 
 class ProductController extends Controller
 {
@@ -35,14 +36,28 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-         dd($request->all());
-//        $product = new Product;
-//        $validated = $request->validate([
-//            'name' => 'required|max:100|unique:products,productname',
-//
-//        ]);
-//        $product->name = $request->name;
-//        $product->save();
+
+        // return ($request);
+       $product = new Product;
+       $product->name = $request->name;
+       $product->code = $request->code;
+       $product->qty_type = $request->qty_type;
+       $product->min_qty = $request->min_qty;
+       $product->description = $request->description;
+       $product->save();
+
+
+       $lotinfo = new LotInfo;
+       $lotinfo->qty_type = $request->qty_type;
+       $lotinfo->qty = $request->qty;
+       $lotinfo->exp = $request->exp;
+       $lotinfo->mfd = $request->mfd;
+       $lotinfo->cost = $request->cost;
+       $lotinfo->s_price = $request->s_price;
+       
+
+
+       
     }
 
     /**

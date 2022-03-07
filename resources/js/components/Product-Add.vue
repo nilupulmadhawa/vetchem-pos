@@ -162,8 +162,10 @@
                         description: this.description,
                     })
                         .then(response =>{
+                            console.log(response.data);
                                 if (response.data.isAdded) {
                                     alert('Product insertion success.');
+                                    
                                         name="",
                                         code="",
                                         barcode="",
