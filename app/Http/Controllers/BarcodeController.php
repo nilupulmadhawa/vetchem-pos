@@ -6,5 +6,8 @@ use Illuminate\Http\Request;
 
 class BarcodeController extends Controller
 {
-    //
+    public function checkBarcode($barcode)
+    {
+        //
+    }
 }

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
+use App\Models\Product;
+use App\Models\LotInfo;
 use Illuminate\Http\Request;
 
 class InvoiceController extends Controller
@@ -35,7 +38,76 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $total = 0;
+        foreach ($request->items as $item) {
+            $product = Product::find($item['id']);
+            $LotInfo = LotInfo::find($item['lotId']);
+            if ($product->productname !=  $item['name'] && $LotInfo->s_price !=  $item['price']) {
+                return [
+                    'isAdded' => false,
+                    'error' => 'Item not match',
+                ];
+            }
+            if ($item['qty'] * $item['price'] - $item['discount'] == $item['salePrice']) {
+                $total += $item['qty'] * $item['price'] - $item['discount'];
+            } else {
+                return [
+                    'isAdded' => false,
+                    'error' => 'Item Sale price error',
+                ];
+            }
+        }
+
+        if ($total != $request->subTotal) {
+            return [
+                'isAdded' => false,
+                'error' => 'Item Sub Total error',
+            ];
+        } elseif ($request->total != $request->subTotal - $request->tDiscount) {
+            return [
+                'isAdded' => false,
+                'error' => 'Item total error',
+            ];
+        } elseif ($request->total + $request->balance != $request->payAmount) {
+            return [
+                'isAdded' => false,
+                'error' => 'Item payAmount error',
+            ];
+        }
+
+        $invoice = new Invoice;
+        $invoice->sub_total = $request->subTotal;
+        $invoice->discount = $request->tDiscount;
+        $invoice->total = $request->total;
+        $invoice->pay_amount = $request->payAmount;
+        $invoice->balance = $request->balance;
+        $invoice->customer_id = 1;
+        $invoice->save();
+
+        foreach ($request->items as $item) {
+
+            $invoiceItem = new InvoiceItem;
+            $invoiceItem->product_id = $item['id'];
+            $invoiceItem->name = $item['name'];
+            $invoiceItem->code = $item['code'];
+            $invoiceItem->price = $item['price'];
+            $invoiceItem->qty = $item['qty'];
+            $invoiceItem->discount = $item['discount'];
+            $invoiceItem->sale_price = $item['salePrice'];
+            $invoiceItem->lot_info_id = $item['lotId'];
+            $invoiceItem->invoice_id = $invoice->id;
+            $invoiceItem->save();
+
+            $lot = LotInfo::find($item['lotId']);
+            $temp = $lot->qty;
+            $lot->qty = $temp - $item['qty'];
+            $lot->save();
+        }
+        return [
+            'isAdded' => true,
+            'id' => $invoice->id,
+            'error' => '',
+        ];
     }
 
     /**

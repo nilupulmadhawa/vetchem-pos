@@ -44,7 +44,7 @@ class LotInfoController extends Controller
      * @param  \App\Models\LotInfo  $lotInfo
      * @return \Illuminate\Http\Response
      */
-    public function show(LotInfo $lotInfo)
+    public function show($lotInfo)
     {
         return LotInfo::find($lotInfo);
     }

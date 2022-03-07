@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\LotInfoController;
+use App\Http\Controllers\InvoiceController;
 use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
 
@@ -27,4 +29,6 @@ Route::get('/product-info/{id}', function ($id) {
 
 Route::resources([
     'product' => ProductController::class,
+    'lot-info' => LotInfoController::class,
+    'invoice' => InvoiceController::class,
 ]);

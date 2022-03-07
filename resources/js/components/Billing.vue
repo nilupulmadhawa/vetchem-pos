@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
                     <label class="m-3">Code</label>
-                    <input ref="barcodeInput" type="text" class="form-control" >
+                    <input ref="codeInput" type="text" class="form-control" v-model="inputCode" v-on:change="selectByCode($event)">
                 </div>
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
                     <label class="m-3">Name</label>
@@ -43,13 +43,12 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th width="5%">id</th>
+                            <th width="5%">Code</th>
                             <th width="20%">Name</th>
                             <th >Price</th>
                             <th>Quantity</th>
                             <th>Discount</th>
                             <th>Sale Price</th>
-                            <th>Warranty</th>
                             <th width="5%"></th>
                         </tr>
                     </thead>
@@ -91,9 +90,7 @@
 <b-modal ref="invoice_pre" size="mg" ok-only no-stacking>
      <div class="card">
          <div class="card-header p-2">
-             <div class="float-right">
-                 <h4 class="mb-0">Item Batch Select</h4>
-             </div>
+            <h4 class="mb-0">Item Batch Select</h4>
          </div>
          <div class="card-body">
              <table class="table table-fixed table-condensed">
@@ -105,10 +102,12 @@
                          </tr>
                      </thead>
                      <tbody>
-                         <tr v-for="lot in lots" v-bind:key="lot.id" :ref="'field-'+index"  tabindex="">
+                         <tr v-for="lot in lots" v-bind:key="lot.id" >
                              <td class="center">{{lot.id}}</td>
                              <td class="center">{{lot.exp}}</td>
                              <td class="center">{{lot.qty}}</td>
+                             <td class="center">{{lot.s_price}}</td>
+                             <td class="center"><button class="btn btn-primary"  :ref="'addBtn'+index"  v-on:click="addItem(lot.id)"><i class="fa fa-plus" aria-hidden="true"></i></button></td>
                          </tr>
                      </tbody>
                  </table>
@@ -133,13 +132,22 @@ import Items from './billing/Items.vue';
             return{
                 items:[],
                 products:[],
+                temp:[],
                 tDiscount:0,
                 payAmount:0,
                 inputName:[],
                 lots:[],
                 inputBarcode:"",
+                inputCode:""
             }
         },
+        props: {
+         index: {
+             type: Number,
+             required: false,
+             default: 1
+            }
+         },
         methods:{
             save() {
                 let validated = true;    
@@ -163,7 +171,7 @@ import Items from './billing/Items.vue';
                     }
 
                     if (validated) {   
-                        axios.post('/api/saveinvoice',{
+                        axios.post('/api/invoice',{
                             items:this.items,
                             subTotal:this.subTotal,
                             tDiscount:this.tDiscount,
@@ -172,9 +180,10 @@ import Items from './billing/Items.vue';
                             balance:this.balance,
                             })
                         .then(response =>{
+                            console.log(response.data);
                             if (response.data.isAdded) {
                                 // console.log( window.location.origin+"/invoice/"+response.data.id);
-                                window.location.href = window.location.origin+"/invoice/"+response.data.id;
+                                // window.location.href = window.location.origin+"/invoice/"+response.data.id;
                                 // location.reload();
                             }else{
                                 alert(response.data.error)
@@ -198,11 +207,32 @@ import Items from './billing/Items.vue';
                     console.log(error);
                 })
             },
-            addItem() {
-                axios.get('/api/product/'+id)
-                .then(response =>{
-                    
-                    this.products =response.data;
+            addItem(id) {
+                axios.get('/api/lot-info/'+id)
+                .then(response =>{                   
+                        if (this.isExist(response.data.product_id)) {
+                            alert('Already added');
+                            this.inputBarcode="";
+                        }else{
+                             var ob = this.products.filter(function(product){
+                                if(product.id ==response.data.product_id){
+                                return product;
+                                }
+                            });
+                            this.items.push({
+                                id:ob[0].id,
+                                code:ob[0].code,
+                                name:ob[0].name,
+                                price:response.data.s_price,
+                                lotId:id,
+                                qty:1.00,
+                                discount:0.00,
+                                salePrice:response.data.s_price,
+                            });
+                           this.lots=[];
+                        }
+                    this.inputName=[];
+                    this.$refs['invoice_pre'].hide();
                 })
                 .catch(error =>{
                     console.log(error);
@@ -215,33 +245,48 @@ import Items from './billing/Items.vue';
                 }else{
                     axios.get('/api/product-info/'+value.id)
                     .then(response =>{
-                        
-                        console.log(response.data);
                         this.lots = response.data;
                         this.$refs['invoice_pre'].show();
+                        this.inputName=[];
                     })
                     .catch(error =>{
                         console.log(error);
                     })
-                    console.log(value.id);
-
-                    this.items.push({
-                        id:value.id,
-                        barcode:value.barcodeid,
-                        name:value.productname,
-                        price:value.salesprice,
-                        qty:1.00,
-                        discount:0.00,
-                        salePrice:value.salesprice,
-                        warranty:value.warranty,
-                    });
-                    this.inputName=[];
+                   
+                    
                 }
                 
             },
-            selectByBarcode(event){
+            selectByCode(event){
                 var ob = this.products.filter(function(product){
-                    if(product.barcodeid == event.target.value)
+                    if(product.code == event.target.value)
+                     return product;
+                });
+
+                if(ob.length > 0){
+                    if (this.isExist(ob[0].id)) {
+                        alert('Already added');
+                        this.inputCode="";
+                    }else{
+                        axios.get('/api/product-info/'+ob[0].id)
+                        .then(response =>{
+                            this.lots = response.data;
+                            this.$refs['invoice_pre'].show();
+                            this.inputCode="";
+                        })
+                        .catch(error =>{
+                            console.log(error);
+                        })
+                    }
+                    
+                }else{
+                    alert('Code Not Valid');
+                    this.inputCode="";
+                }
+            },
+            selectByBarcode(event){
+               var ob = this.products.filter(function(product){
+                    if(product.code == event.target.value)
                      return product;
                 });
 
@@ -250,19 +295,15 @@ import Items from './billing/Items.vue';
                         alert('Already added');
                         this.inputBarcode="";
                     }else{
-                        this.items.push({
-                            id:ob[0].id,
-                            barcode:ob[0].barcodeid,
-                            barcode:ob[0].barcodeid,
-                            name:ob[0].productname,
-                            price:ob[0].salesprice,
-                            qty:1.00,
-                            discount:0.00,
-                            salePrice:ob[0].salesprice,
-                            warranty:ob[0].warranty,
-                        });
-                        this.inputBarcode="";
-                        this.$refs.barcodeInput.focus();
+                        axios.get('/api/product-info/'+ob[0].id)
+                        .then(response =>{
+                            this.lots = response.data;
+                            this.$refs['invoice_pre'].show();
+                            this.inputBarcode="";
+                        })
+                        .catch(error =>{
+                            console.log(error);
+                        })
                     }
                     
                 }else{
@@ -341,5 +382,9 @@ import Items from './billing/Items.vue';
 
 .vselect {
   width: 100%;
+}
+
+.modal-backdrop{
+    opacity: 0.5;
 }
 </style>

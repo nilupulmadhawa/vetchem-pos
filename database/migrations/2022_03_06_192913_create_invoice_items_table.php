@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('invoice_items', function (Blueprint $table) {
             $table->id();
-            $table->string('barcode', 10);
+            $table->unsignedBigInteger('product_id');
+            $table->string('name', 100);
             $table->string('code', 50);
             $table->decimal('price', 10, 2);
             $table->decimal('qty', 10, 2);
