@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
+use Illuminate\Support\Facades\DB;
+use App\Models\LotInfo;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,6 +19,10 @@ use App\Http\Controllers\ProductController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/product-info/{id}', function ($id) {
+    return LotInfo::all()->where('product_id', $id);
 });
 
 Route::resources([

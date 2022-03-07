@@ -46,7 +46,7 @@ class LotInfoController extends Controller
      */
     public function show(LotInfo $lotInfo)
     {
-        //
+        return LotInfo::find($lotInfo);
     }
 
     /**

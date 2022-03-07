@@ -15,10 +15,13 @@ return new class extends Migration
     {
         Schema::create('invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('barcode', 10);
-            $table->string('code', 50);
-            $table->string('name', 100);
-            $table->string('qty_type', 10);
+            $table->decimal('sub_total', 10, 2);
+            $table->decimal('discount', 10, 2);
+            $table->decimal('total', 10, 2);
+            $table->decimal('pay_amount', 10, 2);
+            $table->decimal('balance', 10, 2);
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on("customers")->onDelete('cascade');
             $table->timestamps();
         });
     }

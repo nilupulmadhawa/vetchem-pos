@@ -27,7 +27,7 @@
                     <input ref="barcodeInput" type="text" class="form-control" v-model="inputBarcode" autofocus v-on:change="selectByBarcode($event)">
                 </div>
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
-                    <label class="m-3">Barcode</label>
+                    <label class="m-3">Code</label>
                     <input ref="barcodeInput" type="text" class="form-control" >
                 </div>
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
@@ -36,7 +36,7 @@
                         <option value="" disabled selected>Search By Name..</option>
                         <option v-for="product in products" v-bind:key="product.id" :value="product.barcodeid" @input="onSelect">{{product.productname}}</option>
                     </select> -->
-                    <v-select class="vselect" :options="products" v-model="inputName" label="productname" @input="selectByName" :select-on-key-codes="[188, 13]"></v-select>
+                    <v-select class="vselect" :options="products" v-model="inputName" label="name" @input="selectByName" :select-on-key-codes="[188, 13]"></v-select>
                 </div>
             </div>
             <div class="card p-2">
@@ -53,7 +53,7 @@
                             <th width="5%"></th>
                         </tr>
                     </thead>
-      
+                        <Items @delete-item="deleteItem" @cal-sale-price="calSalePrice" @cal-discount-price="calDiscountPrice" :items="items"/>
                 </table>
             </div>
         </div>
@@ -87,17 +87,48 @@
         </div>
     </div>
 </div>
+
+<b-modal ref="invoice_pre" size="mg" ok-only no-stacking>
+     <div class="card">
+         <div class="card-header p-2">
+             <div class="float-right">
+                 <h4 class="mb-0">Item Batch Select</h4>
+             </div>
+         </div>
+         <div class="card-body">
+             <table class="table table-fixed table-condensed">
+                     <thead>
+                         <tr>
+                             <th class="center">Id</th>
+                             <th class="center">Expiry Data</th>
+                             <th class="center">Qty</th>
+                         </tr>
+                     </thead>
+                     <tbody>
+                         <tr v-for="lot in lots" v-bind:key="lot.id" :ref="'field-'+index"  tabindex="">
+                             <td class="center">{{lot.id}}</td>
+                             <td class="center">{{lot.exp}}</td>
+                             <td class="center">{{lot.qty}}</td>
+                         </tr>
+                     </tbody>
+                 </table>
+         </div>
+     </div>
+    
+  </b-modal>
         </section>
 </template>
 
 <script>
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
+import Items from './billing/Items.vue';
     export default {
         components: { 
-            vSelect 
+            vSelect,
+            Items
         },
-        name:'Invoiceform',
+        name:'Billing',
         data(){
             return{
                 items:[],
@@ -105,6 +136,7 @@ import 'vue-select/dist/vue-select.css';
                 tDiscount:0,
                 payAmount:0,
                 inputName:[],
+                lots:[],
                 inputBarcode:"",
             }
         },
@@ -157,7 +189,17 @@ import 'vue-select/dist/vue-select.css';
                 }
             },
             getProducts() {
-                axios.get('/api/products')
+                axios.get('/api/product')
+                .then(response =>{
+                    
+                    this.products =response.data;
+                })
+                .catch(error =>{
+                    console.log(error);
+                })
+            },
+            addItem() {
+                axios.get('/api/product/'+id)
                 .then(response =>{
                     
                     this.products =response.data;
@@ -171,6 +213,18 @@ import 'vue-select/dist/vue-select.css';
                     alert('Already added');
                     this.inputName=[];
                 }else{
+                    axios.get('/api/product-info/'+value.id)
+                    .then(response =>{
+                        
+                        console.log(response.data);
+                        this.lots = response.data;
+                        this.$refs['invoice_pre'].show();
+                    })
+                    .catch(error =>{
+                        console.log(error);
+                    })
+                    console.log(value.id);
+
                     this.items.push({
                         id:value.id,
                         barcode:value.barcodeid,
@@ -198,6 +252,7 @@ import 'vue-select/dist/vue-select.css';
                     }else{
                         this.items.push({
                             id:ob[0].id,
+                            barcode:ob[0].barcodeid,
                             barcode:ob[0].barcodeid,
                             name:ob[0].productname,
                             price:ob[0].salesprice,
