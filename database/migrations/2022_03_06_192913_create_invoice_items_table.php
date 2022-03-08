@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('code', 50);
             $table->decimal('price', 10, 2);
-            $table->decimal('qty', 10, 2);
+            $table->decimal('qty', 10, 3);
             $table->decimal('discount', 10, 2);
             $table->decimal('sale_price', 10, 2);
             $table->unsignedBigInteger('lot_info_id');

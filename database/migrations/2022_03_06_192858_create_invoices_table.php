@@ -4,6 +4,10 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+use App\Models\User;
+use App\Models\Customer;
+
+
 return new class extends Migration
 {
     /**
@@ -20,8 +24,9 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->decimal('pay_amount', 10, 2);
             $table->decimal('balance', 10, 2);
-            $table->unsignedBigInteger('customer_id');
-            $table->foreign('customer_id')->references('id')->on("customers")->onDelete('cascade');
+            $table->boolean('isPaid')->default(true);
+            $table->foreignIdFor(User::class)->constrained('users');
+            $table->foreignIdFor(Customer::class)->constrained('customers');
             $table->timestamps();
         });
     }
