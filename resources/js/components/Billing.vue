@@ -180,13 +180,13 @@ import Items from './billing/Items.vue';
                             balance:this.balance,
                             })
                         .then(response =>{
-                            console.log(response.data);
                             if (response.data.isAdded) {
                                 // console.log( window.location.origin+"/invoice/"+response.data.id);
-                                // window.location.href = window.location.origin+"/invoice/"+response.data.id;
+                                window.location.href = window.location.origin+"/invoice/print/"+response.data.id;
                                 // location.reload();
+                                this.items=[]
                             }else{
-                                alert(response.data.error)
+                                alert(response.data.error);
                             }
                         })
                         .catch(error =>{
@@ -223,11 +223,11 @@ import Items from './billing/Items.vue';
                                 id:ob[0].id,
                                 code:ob[0].code,
                                 name:ob[0].name,
-                                price:response.data.s_price,
+                                price:response.data.r_price,
                                 lotId:id,
                                 qty:1.00,
                                 discount:0.00,
-                                salePrice:response.data.s_price,
+                                salePrice:response.data.r_price,
                             });
                            this.lots=[];
                         }

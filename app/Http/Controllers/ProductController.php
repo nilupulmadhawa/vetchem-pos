@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Product;
 use Illuminate\Http\Request;
-use App\Models\LotInfo;
+use App\Models\Barcode;
 
 class ProductController extends Controller
 {
@@ -15,7 +15,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        return Product::all();
+        return Product::with('category', 'subCategory')->get();
     }
 
     /**
@@ -38,26 +38,31 @@ class ProductController extends Controller
     {
 
         // return ($request);
-       $product = new Product;
-       $product->name = $request->name;
-       $product->code = $request->code;
-       $product->qty_type = $request->qty_type;
-       $product->min_qty = $request->min_qty;
-       $product->description = $request->description;
-       $product->save();
+        $product = new Product;
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->qty_type = $request->qty_type;
+        $product->re_order_level = $request->orderLevel;
+        $product->re_order_qty = $request->orderQty;
+        $product->description = $request->description;
+        $product->status = $request->status;
+        $product->category_id  = $request->category;
+        $product->sub_category_id  = $request->subCategory;
+        $product->brand_id  = $request->brand;
+        $product->supplier_id   = $request->supplier;
+        $product->save();
 
+        foreach ($request->barcode as $code) {
+            $barcode = new Barcode;
+            $barcode->barcode = $code;
+            $barcode->product_id = $product->id;
+            $barcode->save();
+        }
 
-       $lotinfo = new LotInfo;
-       $lotinfo->qty_type = $request->qty_type;
-       $lotinfo->qty = $request->qty;
-       $lotinfo->exp = $request->exp;
-       $lotinfo->mfd = $request->mfd;
-       $lotinfo->cost = $request->cost;
-       $lotinfo->s_price = $request->s_price;
-       
-
-
-       
+        return [
+            'isAdded' => true,
+            'error' => '',
+        ];
     }
 
     /**

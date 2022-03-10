@@ -14,7 +14,7 @@ class LotInfoController extends Controller
      */
     public function index()
     {
-        //
+        return LotInfo::all();
     }
 
     /**
@@ -35,7 +35,20 @@ class LotInfoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $lotInfo = new LotInfo;
+        $lotInfo->initial_qty = $request->qty;
+        $lotInfo->qty = $request->qty;
+        $lotInfo->mfd = $request->mfd;
+        $lotInfo->exp = $request->exp;
+        $lotInfo->cost = $request->cost;
+        $lotInfo->r_price = $request->rprice;
+        $lotInfo->ws_price = $request->wprice;
+        $lotInfo->product_id = $request->id;
+        $lotInfo->save();
+        return [
+            'isAdded' => true,
+            'error' => '',
+        ];
     }
 
     /**

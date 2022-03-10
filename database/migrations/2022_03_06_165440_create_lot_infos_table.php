@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Product;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,14 +16,14 @@ return new class extends Migration
     {
         Schema::create('lot_infos', function (Blueprint $table) {
             $table->id();
-            $table->string('qty_type', 10);
+            $table->decimal('initial_qty', 10, 3);
             $table->decimal('qty', 10, 3);
-            $table->date('exp');
             $table->date('mfd');
+            $table->date('exp');
             $table->decimal('cost', 10, 2);
-            $table->decimal('s_price', 10, 2);
-            $table->unsignedBigInteger('product_id');
-            $table->foreign('product_id')->references('id')->on("products")->onDelete('cascade');
+            $table->decimal('r_price', 10, 2);
+            $table->decimal('ws_price', 10, 2);
+            $table->foreignIdFor(Product::class)->constrained('products');
             $table->timestamps();
         });
     }

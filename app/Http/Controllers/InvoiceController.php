@@ -7,6 +7,7 @@ use App\Models\InvoiceItem;
 use App\Models\Product;
 use App\Models\LotInfo;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class InvoiceController extends Controller
 {
@@ -27,7 +28,7 @@ class InvoiceController extends Controller
      */
     public function create()
     {
-        //
+        return Auth::user()->name;
     }
 
     /**
@@ -38,11 +39,12 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
+
         $total = 0;
         foreach ($request->items as $item) {
             $product = Product::find($item['id']);
             $LotInfo = LotInfo::find($item['lotId']);
-            if ($product->productname !=  $item['name'] && $LotInfo->s_price !=  $item['price']) {
+            if ($product->productname !=  $item['name'] && $LotInfo->r_price !=  $item['price']) {
                 return [
                     'isAdded' => false,
                     'error' => 'Item not match',
@@ -82,6 +84,7 @@ class InvoiceController extends Controller
         $invoice->pay_amount = $request->payAmount;
         $invoice->balance = $request->balance;
         $invoice->customer_id = 1;
+        $invoice->user_id = 1;
         $invoice->save();
 
         foreach ($request->items as $item) {
@@ -153,5 +156,16 @@ class InvoiceController extends Controller
     public function destroy(Invoice $invoice)
     {
         //
+    }
+
+    public function printInvoice($id)
+    {
+        $invoice = Invoice::find($id);
+        $data = $invoice->load('InvoiceItems');
+        // $users = $invoice->load('InvoiceItems')->get();
+        // dd($users->toArray());
+        // print_r($data);
+        // return View('invoices.show')->with('data', $data);
+        return View('print.invoice')->with('data', $data);
     }
 }

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->decimal('total', 10, 2);
             $table->decimal('pay_amount', 10, 2);
             $table->decimal('balance', 10, 2);
-            $table->boolean('isPaid')->default(true);
+            $table->boolean('is_paid')->default(true);
             $table->foreignIdFor(User::class)->constrained('users');
             $table->foreignIdFor(Customer::class)->constrained('customers');
             $table->timestamps();
