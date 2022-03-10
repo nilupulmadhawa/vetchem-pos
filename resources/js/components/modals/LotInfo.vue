@@ -123,7 +123,14 @@ export default {
                 id: this.id,
             })
             .then(response =>{
-                this.$emit('setLotInfo')      
+                this.$emit('setLotInfo')  
+                this.qty=''
+                this.mfd=''
+                this.exp=''
+                this.cost=''
+                this.rprice=''
+                this.wprice=''
+                this.id=''
                 this.lotList()          
             })
             .catch(error =>{
