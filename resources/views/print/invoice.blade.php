@@ -165,22 +165,20 @@
         Dust seal,Pressure seal, Floating seals & Every kind of NOK Seals.</div> --}} -->
             <h1>Vet Chem Farm Needs (Pvt) Ltd</h1>
             <p>Reg.No: 00203573</p>
-
-            <h2>INVOICE</h2>
         </div>
 
         <div id="company" class="clearfix ">
-            <center>
+            
                 <!-- <div>THUSHARA CELLULAR SERVICE</div> -->
                 <div>Madampe rd, Kuliyapitiya.Sri Lanka</div>
                 <div>Branches: Chilaw rd,Malwana,Wariyapola.</div>
                 <div>Tel :077 7236829 / 0372057564</div>
                 <!-- <div>E-mail :<a href="#">thusharacom4@gmail.com</a></div> -->
-            </center>
+            
         </div>
         <div id="project">
-            <div><span>INVOICE NO :</span> #123</div>
-            <div><span>DATE :</span>222/55/5</div>
+            <div><span>INVOICE NO :</span> #{{$data->id}}</div>
+            <div><span>DATE :</span>{{$data->created_at}}</div>
         </div>
     </header>
     <main>
