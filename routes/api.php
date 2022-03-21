@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\Product;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 
 /*
@@ -52,6 +53,9 @@ Route::get('/category/check/{value}', function ($value) {
     }
 });
 
+Route::get('/supply/{id}', function ($id) {
+    return Product::all()->where('supplier_id', $id);
+});
 
 
 Route::resources([
