@@ -10,6 +10,7 @@ use App\Http\Controllers\SubCategoryController;
 use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\QtyTypeController;
+use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
 use App\Models\Category;
@@ -62,4 +63,5 @@ Route::resources([
     'brand' => BrandController::class,
     'supplier' => SupplierController::class,
     'qtytype' => QtyTypeController::class,
+    'customer' => CustomerController::class,
 ]);

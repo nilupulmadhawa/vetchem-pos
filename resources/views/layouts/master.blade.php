@@ -52,7 +52,7 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                    <router-link active-class="active" to="/product-list" class="nav-link ">
+                        <router-link active-class="active" to="/product-list" class="nav-link ">
                             Product List
                         </router-link>
                     </li>
@@ -221,6 +221,24 @@
                                         </router-link>
                                     </li>
                                 </ul>
+                            </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/supplier" class="nav-link ">
+                                    <i class="fas fa-shopping-cart nav-icon"></i>
+                                    <p>Supplier</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/customer" class="nav-link ">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Customer</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/report" class="nav-link ">
+                                    <i class="fas fa-sticky-note nav-icon"></i>
+                                    <p>Report</p>
+                                </router-link>
                             </li>
                             <hr style="border-color:#ffff; border: size 3px;" />
                             <li class="nav-item">
