@@ -44,7 +44,6 @@ class SupplierController extends Controller
             'isAdded' => true,
             'error' => '',
         ];
-    
     }
 
     /**
@@ -55,7 +54,7 @@ class SupplierController extends Controller
      */
     public function show(Supplier $supplier)
     {
-        //
+        return Supplier::find($supplier);
     }
 
     /**

@@ -24,19 +24,19 @@
             <div class="card p-2 pt-4 d-flex flex-row justify-content-center">
                 <div class="form-group d-flex flex-row col-md-4 align-items-center">
                     <label class="m-3">Barcode</label>
-                    <input ref="barcodeInput" type="text" class="form-control" v-model="inputBarcode" autofocus v-on:change="selectByBarcode($event)">
+                    <input autofocus ref="barcodeInput" type="text" class="form-control" v-model="inputBarcode"  v-on:change="selectByBarcode($event)">
                 </div>
-                <div class="form-group d-flex flex-row col-md-4 align-items-center">
+                <!-- <div class="form-group d-flex flex-row col-md-4 align-items-center">
                     <label class="m-3">Code</label>
                     <input ref="codeInput" type="text" class="form-control" v-model="inputCode" v-on:change="selectByCode($event)">
-                </div>
-                <div class="form-group d-flex flex-row col-md-4 align-items-center">
+                </div> -->
+                <div class="form-group d-flex flex-row col-md-8 align-items-center">
                     <label class="m-3">Name</label>
                     <!-- <select class="select2" style="width: 100%;" @change="$emit('barcode', optionsArray)">
                         <option value="" disabled selected>Search By Name..</option>
                         <option v-for="product in products" v-bind:key="product.id" :value="product.barcodeid" @input="onSelect">{{product.productname}}</option>
                     </select> -->
-                    <v-select class="vselect" :options="products" v-model="inputName" label="name" @input="selectByName" :select-on-key-codes="[188, 13]"></v-select>
+                    <v-select  class="vselect" :options="products" v-model="inputName" label="name" @input="selectByName" :select-on-key-codes="[188, 13]"></v-select>
                 </div>
             </div>
             <div class="card p-2">
@@ -75,11 +75,12 @@
             <div class="card p-3">
                 <div class="form-group d-flex">
                     <label class="col-md-5">Customer</label>
-                    <input type="number" class="form-control col-md-7" v-model.number="payAmount" min="0">
+                    <v-select style="font-size:13px;" class="vselect" :options="customers" v-model="cusName" label="name"></v-select>
                 </div>
+                <a style="margin:-15px 0 10px 10px" href="#" role="button" v-b-modal.modal-customer>Add Customer</a>
                 <div class="form-group d-flex">
                     <label class="col-md-5">Note</label>
-                    <textarea name="note" id="" rows="2" class="form-control col-md-7"></textarea>
+                    <textarea name="note" v-model="cusDetails" rows="2" class="form-control col-md-7"></textarea>
                 </div>
             </div>
              <div class="card p-3">
@@ -90,7 +91,7 @@
                     </label>
                     <input class="form-check-input" type="radio" name="status" id="unpaid" v-model="status" value="Unpaid">
                     <label class="form-check-label col-md-5" for="unpaid">
-                    Unpaid
+                        Credit
                     </label>
                 </div>
                 <dir v-if="status === 'Paid'" class="p-0">
@@ -137,6 +138,7 @@
      </div>
     
   </b-modal>
+  <Customer @getCustmers="getCustmers"/>
         </section>
 </template>
 
@@ -144,16 +146,19 @@
 import vSelect from 'vue-select'
 import 'vue-select/dist/vue-select.css';
 import Items from './billing/Items.vue';
+import Customer from './modals/Customer.vue';
     export default {
         components: { 
             vSelect,
-            Items
+            Items,
+            Customer
         },
         name:'Billing',
         data(){
             return{
                 items:[],
                 products:[],
+                customers:[],
                 temp:[],
                 tDiscount:0,
                 payAmount:0,
@@ -161,7 +166,11 @@ import Items from './billing/Items.vue';
                 lots:[],
                 inputBarcode:"",
                 inputCode:"",
-                status:"Paid"
+                status:"Paid",
+                cusName:{
+                        description: "",
+                        id: 1,
+                        name: "New Customer"},
             }
         },
         props: {
@@ -191,9 +200,17 @@ import Items from './billing/Items.vue';
                     }else if(!(this.payAmount>=0)){
                         alert('Pay Amount must be greater than 0');
                         validated = false;
+                    }else if(this.cusName.id == 1 && this.status != "Paid"){
+                        alert('Please select customer');
+                        validated = false;
+                    }
+                    var is_paid = 0;
+                    if (this.status == "Paid") {
+                        is_paid = 1; 
                     }
 
                     if (validated) {   
+                        
                         axios.post('/api/invoice',{
                             items:this.items,
                             subTotal:this.subTotal,
@@ -201,6 +218,8 @@ import Items from './billing/Items.vue';
                             total:this.total,
                             payAmount:this.payAmount,
                             balance:this.balance,
+                            is_paid:is_paid,
+                            cusid:this.cusName.id,
                             })
                         .then(response =>{
                             if (response.data.isAdded) {
@@ -223,8 +242,22 @@ import Items from './billing/Items.vue';
             getProducts() {
                 axios.get('/api/product')
                 .then(response =>{
-                    
-                    this.products =response.data;
+                    response.data.forEach(prdetails => {
+                        this.products.push({
+                                id :prdetails.id,
+                                name :prdetails.code+' - '+prdetails.name,
+                                 code :prdetails.code,
+                            });
+                    });                    
+                })
+                .catch(error =>{
+                    console.log(error);
+                })
+            },
+            getCustmers() {
+                axios.get('/api/customer')
+                .then(response =>{
+                    this.customers = response.data                   
                 })
                 .catch(error =>{
                     console.log(error);
@@ -261,6 +294,7 @@ import Items from './billing/Items.vue';
                     console.log(error);
                 })
             },
+            
             selectByName(value){
                 if (this.isExist(value.id)) {
                     alert('Already added');
@@ -378,6 +412,7 @@ import Items from './billing/Items.vue';
         mounted: function(){
             
             this.getProducts();
+            this.getCustmers();
             
         },
         created: function () {
@@ -396,6 +431,9 @@ import Items from './billing/Items.vue';
             balance: function () {
                 return this.payAmount- this.total;
             
+            },
+            cusDetails: function () {
+                 return this.cusName.description;
             },
         },
     }

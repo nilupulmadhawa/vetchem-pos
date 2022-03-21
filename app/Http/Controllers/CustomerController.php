@@ -14,7 +14,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        //
+        return Customer::all();
     }
 
     /**
@@ -24,7 +24,6 @@ class CustomerController extends Controller
      */
     public function create()
     {
-        //
     }
 
     /**
@@ -35,7 +34,15 @@ class CustomerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $category = new Customer;
+        $category->name = $request->name;
+        $category->phone_number = $request->number;
+        $category->description = $request->des;
+        $category->save();
+        return [
+            'isAdded' => true,
+            'error' => '',
+        ];
     }
 
     /**

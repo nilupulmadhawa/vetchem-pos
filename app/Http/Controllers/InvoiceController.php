@@ -83,7 +83,8 @@ class InvoiceController extends Controller
         $invoice->total = $request->total;
         $invoice->pay_amount = $request->payAmount;
         $invoice->balance = $request->balance;
-        $invoice->customer_id = 1;
+        $invoice->is_paid = $request->is_paid;
+        $invoice->customer_id = $request->cusid;
         $invoice->user_id = 1;
         $invoice->save();
 

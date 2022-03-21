@@ -11,7 +11,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Product list</a></li>
+                        <li class="breadcrumb-item"><router-link to="/dashboard" >Dashboard</router-link></li>
                         <li class="breadcrumb-item active">Supplier List</li>
                     </ol>
                 </div><!-- /.col -->
@@ -29,23 +29,19 @@
             :sortable="true"
             :paginated="true"
             :multi-column-sortable="true"
-            :default-order-column="columnToSortBy"
             :default-order-direction="false"
             :row-click-handler="handleRowFunction"
         >
         </vue-bootstrap-table>
     </div>
-    
     </section>
 </template>
 
 <script>
 import VueBootstrapTable from "vue2-bootstrap-table2";
-import LotInfo from './modals/LotInfo.vue';
 export default {
     components: {
         VueBootstrapTable: VueBootstrapTable,
-        LotInfo
     },
     data() {
         return {
@@ -72,7 +68,37 @@ export default {
                 },
             ],
             values: [],
+            sDetails:[],
+            id:0
         };
+    },
+    methods:{
+        getSupplier() {
+            axios
+                .get("/api/supplier")
+                .then((response) => {
+                    response.data.forEach((idata) => {
+                        this.values.push({
+                            id: idata.id,
+                            Name: idata.name,
+                            "Phone Number": idata.company,
+                            Company: idata.phone_number,
+                        });
+                    });
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        handleRowFunction(event, entry) {
+            this.$router.push('supply/'+entry["id"]) 
+            
+        },
+       
+    },
+    mounted: function () {
+        this.getSupplier();
     },
 }
 </script>
