@@ -4,6 +4,7 @@ import Dashboard from './components/Dashboard.vue';
 import ProductList from './components/Product-List.vue';
 import ProductAdd from './components/Product-Add.vue';
 import Productlowquantity from './components/Product-Low-Quantity.vue';
+import Supplier from './components/Supplier.vue';
 export const routes = [
     {
         path: '/invoices',
@@ -36,5 +37,11 @@ export const routes = [
         path: '/Product-Low-Quantity-add',
         component: Productlowquantity,
         name: "Productlowquantity"
+    },
+
+    {
+        path: '/supplier',
+        component: Supplier,
+        name: "Supplier"
     }
 ];
