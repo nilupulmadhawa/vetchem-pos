@@ -57,30 +57,52 @@
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-3 slabel">
             <div class="card p-3">
-                <div class="form-group">
-                    <label>Sub Total</label>
-                    <input type="number" class="form-control"  v-model.number="subTotal" readonly>
+                <div class="form-group d-flex">
+                    <label class="col-md-5">Sub Total</label>
+                    <input type="number" class="form-control col-md-7"  v-model.number="subTotal" readonly>
                 </div>
-                <div class="form-group">
-                    <label>Discount</label>
-                    <input ref="discount" type="number" class="form-control" v-model.number="tDiscount"  min="0">
+                <div class="form-group d-flex">
+                    <label class="col-md-5">Discount</label>
+                    <input ref="discount" type="number" class="form-control col-md-7" v-model.number="tDiscount"  min="0">
                 </div>
-                <div class="form-group">
-                    <label>Total</label>
-                    <input type="number" class="form-control" value="0" readonly v-model.number="total">
+                <div class="form-group d-flex">
+                    <label class="col-md-5">Total</label>
+                    <input type="number" class="form-control col-md-7" value="0" readonly v-model.number="total">
                 </div>
             </div>
             <div class="card p-3">
-                <div class="form-group">
-                    <label>Pay Amount</label>
-                    <input type="number" class="form-control" v-model.number="payAmount" min="0">
+                <div class="form-group d-flex">
+                    <label class="col-md-5">Customer</label>
+                    <input type="number" class="form-control col-md-7" v-model.number="payAmount" min="0">
                 </div>
-                <div class="form-group">
-                    <label>Balance</label>
-                    <input type="number" class="form-control" value="0" readonly v-model.number="balance" v-on:keyup="inputFocas">
+                <div class="form-group d-flex">
+                    <label class="col-md-5">Note</label>
+                    <textarea name="note" id="" rows="2" class="form-control col-md-7"></textarea>
                 </div>
+            </div>
+             <div class="card p-3">
+                <div class="form-check ml-3 mb-3">
+                    <input class="form-check-input" type="radio" name="status" id="paid" checked v-model="status" value="Paid">
+                    <label class="form-check-label col-md-5" for="paid">
+                    Paid
+                    </label>
+                    <input class="form-check-input" type="radio" name="status" id="unpaid" v-model="status" value="Unpaid">
+                    <label class="form-check-label col-md-5" for="unpaid">
+                    Unpaid
+                    </label>
+                </div>
+                <dir v-if="status === 'Paid'" class="p-0">
+                    <div class="form-group d-flex">
+                        <label class="col-md-5">Pay Amount</label>
+                        <input type="number" class="form-control col-md-7" v-model.number="payAmount" min="0">
+                    </div>
+                    <div class="form-group d-flex">
+                        <label class="col-md-5">Balance</label>
+                        <input type="number" class="form-control col-md-7" value="0" readonly>
+                    </div>
+                </dir>
             </div>
             <button type="button" class="btn btn-block btn-primary" @click="save" @keyup.left="save">Submit</button>
         </div>
@@ -138,7 +160,8 @@ import Items from './billing/Items.vue';
                 inputName:[],
                 lots:[],
                 inputBarcode:"",
-                inputCode:""
+                inputCode:"",
+                status:"Paid"
             }
         },
         props: {
@@ -386,5 +409,9 @@ import Items from './billing/Items.vue';
 
 .modal-backdrop{
     opacity: 0.5;
+}
+
+.slabel label{
+    font-size: 16px;
 }
 </style>
