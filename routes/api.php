@@ -11,11 +11,14 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\QtyTypeController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SupplierInvoiceController;
 use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\Supplier;
+use App\Models\SupplierInvoice;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 
 /*
@@ -37,6 +40,11 @@ Route::get('/product-info/{id}', function ($id) {
     return LotInfo::all()->where('product_id', $id);
 });
 
+Route::get('/supplyinvoice/{id}', function ($id) {
+    return SupplierInvoice::where('supplier_id', $id)->get();
+});
+
+
 Route::get('/invoiceItem/{id}', function ($id) {
     $invoice = Invoice::find($id);
     return $invoice->load('invoiceItems');
@@ -53,10 +61,19 @@ Route::get('/category/check/{value}', function ($value) {
     }
 });
 
-Route::get('/supply/{id}', function ($id) {
-    return Product::all()->where('supplier_id', $id);
+Route::get('/productsupply/{id}', function ($id) {
+    return Product::with('category', 'subCategory')->get()->where('supplier_id', $id);
 });
 
+
+
+Route::post('supplierup', function ($id) {
+    $supplier = Supplier::find($id->id);
+    $supplier->name = $id->name;
+    $supplier->company = $id->company;
+    $supplier->phone_number = $id->phone_number;
+    $supplier->save();
+});
 
 Route::resources([
     'product' => ProductController::class,
@@ -68,4 +85,5 @@ Route::resources([
     'supplier' => SupplierController::class,
     'qtytype' => QtyTypeController::class,
     'customer' => CustomerController::class,
+    'supplier-invoice' => SupplierInvoiceController::class,
 ]);

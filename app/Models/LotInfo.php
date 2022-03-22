@@ -14,4 +14,8 @@ class LotInfo extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }

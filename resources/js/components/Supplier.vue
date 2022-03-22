@@ -21,6 +21,7 @@
 
     <!-- /.content-header -->
     <div class="card p-3">
+        <a style="text-align: end;"  href="#" role="button" v-b-modal.modal-supplier>Add Supplier</a>
         <vue-bootstrap-table
             :columns="columns"
             :values="values"
@@ -34,14 +35,17 @@
         >
         </vue-bootstrap-table>
     </div>
+    <Supplier @getSuppliers="getSuppliers"/>
     </section>
 </template>
 
 <script>
 import VueBootstrapTable from "vue2-bootstrap-table2";
+import Supplier from './modals/Supplier.vue';
 export default {
     components: {
         VueBootstrapTable: VueBootstrapTable,
+        Supplier
     },
     data() {
         return {
@@ -73,9 +77,10 @@ export default {
         };
     },
     methods:{
-        getSupplier() {
+        getSuppliers() {
+            this.values=[];
             axios
-                .get('/api/supply/'+entry["id"])
+                .get("/api/supplier")
                 .then((response) => {
                     response.data.forEach((idata) => {
                         this.values.push({
@@ -98,7 +103,7 @@ export default {
        
     },
     mounted: function () {
-        this.getSupplier();
+        this.getSuppliers();
     },
 }
 </script>

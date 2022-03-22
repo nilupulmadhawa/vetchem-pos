@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Product;
+use App\Models\Supplier;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -24,6 +25,7 @@ return new class extends Migration
             $table->decimal('r_price', 10, 2);
             $table->decimal('ws_price', 10, 2);
             $table->foreignIdFor(Product::class)->constrained('products');
+            $table->integer('supplier_invoice_id')->default('0');
             $table->timestamps();
         });
     }

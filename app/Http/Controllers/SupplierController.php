@@ -65,7 +65,6 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        //
     }
 
     /**
@@ -77,7 +76,11 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        //
+        $supplier = Supplier::find($request->id);
+        $supplier->name = $request->name;
+        $supplier->company = $request->company;
+        $supplier->phone_number = $request->phone_number;
+        $supplier->save();
     }
 
     /**

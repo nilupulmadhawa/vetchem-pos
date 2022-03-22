@@ -3,7 +3,7 @@
         <b-modal
             id="modal-supplier"
             ref="modal"
-            title="Add Brand"
+            title="Add Supplier"
             @show="resetModal"
             @hidden="resetModal"
             @ok="handleOk"

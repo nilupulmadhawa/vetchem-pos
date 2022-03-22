@@ -300,7 +300,7 @@ import Customer from './modals/Customer.vue';
                     alert('Already added');
                     this.inputName=[];
                 }else{
-                    axios.get('/api/product-info/'+value.id)
+                    axios.get('/api/product/'+value.id)
                     .then(response =>{
                         this.lots = response.data;
                         this.$refs['invoice_pre'].show();
@@ -417,7 +417,7 @@ import Customer from './modals/Customer.vue';
         },
         created: function () {
             window.addEventListener('keyup', this._keyListener)
-    },
+        },
         computed: {
             total: function () {
                 return this.subTotal-this.tDiscount;

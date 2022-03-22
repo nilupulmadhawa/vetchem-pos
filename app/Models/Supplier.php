@@ -8,4 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class Supplier extends Model
 {
     use HasFactory;
+    public function supplierInvoices()
+    {
+        return $this->hasMany(SupplierInvoice::class);
+    }
+
+    public function lotInfos()
+    {
+        return $this->hasMany(LotInfo::class);
+    }
 }
