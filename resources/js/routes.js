@@ -6,6 +6,7 @@ import ProductAdd from './components/Product-Add.vue';
 import Productlowquantity from './components/Product-Low-Quantity.vue';
 import Supplier from './components/Supplier.vue';
 import SupplierInfo from './components/Supplier-Info.vue';
+import Customer from './components/Customer.vue';
 export const routes = [
     {
         path: '/invoices',
@@ -50,5 +51,10 @@ export const routes = [
         path: '/supply/:id',
         component: SupplierInfo,
         name: "SupplierInfo"
+    },
+    {
+        path: '/customer',
+        component: Customer,
+        name: "Customer"
     }
 ]; 

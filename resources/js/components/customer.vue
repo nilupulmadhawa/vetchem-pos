@@ -1,8 +1,7 @@
 <template>
         <!-- Main content -->
     <section class="content">
-
-    <!-- Content Header (Page header) -->
+         <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -18,6 +17,15 @@
             </div><!-- /.row -->
         </div><!-- /.container-fluid -->
     </div>
+    <div>
+        <b-button-toolbar aria-label="Toolbar with button groups and dropdown menu">
+            <b-button-group class="mx-1">
+            <b-button>New</b-button>
+            <b-button>Edit</b-button>
+            <b-button>Undo</b-button>
+            </b-button-group>
+        </b-button-toolbar>
+        </div>
             
 
     <!-- /.content-header -->
@@ -36,7 +44,7 @@
         >
         </vue-bootstrap-table>
     </div>
-<h2>hfhfhfhfhfhfhfh</h2>    
+<h2></h2>    
     </section>
 </template>
 
