@@ -75,7 +75,7 @@ export default {
     methods:{
         getSupplier() {
             axios
-                .get("/api/supplier")
+                .get('/api/supply/'+entry["id"])
                 .then((response) => {
                     response.data.forEach((idata) => {
                         this.values.push({
