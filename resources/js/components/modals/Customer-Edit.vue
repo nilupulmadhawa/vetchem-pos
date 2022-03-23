@@ -1,52 +1,46 @@
 <template>
     <div>
         <b-modal
-            id="modal-supplier-d"
+            id="modal-customer-edit"
             ref="modal"
-            title="Edit Supplier"
+            title="Edit Customer"
             @show="resetModal"
             @hidden="resetModal"
             @ok="handleOk"
         >       
             <form ref="form" @submit.stop.prevent="handleSubmit">
                 <b-form-group
-                label="Supplier Name"
+                label="Customer Name"
                 label-for="name-input"
-                invalid-feedback="Supplier name is already exists"
-                :state="nameState"
+                invalid-feedback="Customer name is already exists"
                 >
                 <b-form-input
                     id="name-input"
-                    v-model="name"
-                    :state="nameState"
+                    v-model="csname"
                     required
                 ></b-form-input>
                 </b-form-group>
 
                  <b-form-group
-                label="Company"
-                label-for="company-input"
-                invalid-feedback="Company name is already exists"
-                :state="companyNameState"
+                label="Phone Number"
+                label-for="Number-input"
+                invalid-feedback="Number name is already exists"
                 >
                 <b-form-input
-                    id="company-input"
-                    v-model="companyName"
-                    :state="companyNameState"
+                    id="Number-input"
+                    v-model="number"
                     required
                 ></b-form-input>
                 </b-form-group>
 
                  <b-form-group
-                label="Phoner Number"
-                label-for="number-input"
-                invalid-feedback="Phone Number is already exists"
-                :state="phoneNumberState"
+                label="Description"
+                label-for="des-input"
+                invalid-feedback="Description is already exists"
                 >
                 <b-form-input
-                    id="number-input"
-                    v-model="phoneNumber"
-                    :state="phoneNumberState"
+                    id="des-input"
+                    v-model="description"
                     required
                 ></b-form-input>
                 </b-form-group>
@@ -56,14 +50,14 @@
 </template>
 <script>
 export default {
-    name:'SupplierEdit',
+    name:'CustomerEdit',
     data() {
       return {
-        name:'asd',
+        csname:'',
         nameState: null,
-        companyName: 'sdsd',
+        number: '',
         companyNameState: null,
-        phoneNumber: 'dsad',
+        description: '',
         phoneNumberState: null,
         submittedNames: [],
       }
@@ -105,18 +99,18 @@ export default {
         this.handleSubmit()
       },
       handleSubmit() {
-        axios.post('/api/supplierup', {
+        axios.post('/api/cusedit', {
                 id: this.$route.params.id,
-                name: this.name,
-                company: this.companyName,
-                phone_number: this.phoneNumber,
+                name: this.csname,
+                number: this.number,
+                description: this.description,
             })
             .then(response =>{
               if (response.data) {
                 alert('Updated')
-                this.$emit('getSupplier') 
-             }
-                              
+              }
+                this.$emit('getCustomer')                
+                this.$emit('getInvoice')                
             })
             .catch(error =>{
             console.log(error);
@@ -129,16 +123,17 @@ export default {
         
         // Hide the modal manually
         this.$nextTick(() => {
-          this.$bvModal.hide('modal-supplier-d')
+          this.$bvModal.hide('modal-customer-edit')
         })
       },
-      getSupplierdet() {
+      getcustomerdet() {
             axios
-                .get("/api/supplier/"+this.$route.params.id)
+                .get("/api/customer/"+this.$route.params.id)
                 .then((response) => {
-                    this.name= response.data[0].name;
-                    this.companyName= response.data[0].company;
-                    this.phoneNumber= response.data[0].phone_number;
+                  console.log(response.data[0].phone_number);
+                    this.csname= response.data[0].name;
+                    this.number= response.data[0].phone_number;
+                    this.description= response.data[0].description;
                 })
 
                 .catch((error) => {
@@ -147,7 +142,7 @@ export default {
         },
     },
     mounted: function () {
-        this.getSupplierdet();
+        this.getcustomerdet();
     },
   }
 </script>

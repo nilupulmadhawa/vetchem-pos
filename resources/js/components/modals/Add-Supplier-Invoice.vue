@@ -28,7 +28,7 @@
                 </div>
                 <div class="form-group d-flex">
                   <label for="invoiceid" class="col-md-2">Total</label>
-                  <input class="form-control" v-model="total" type="text">
+                  <input class="form-control" v-model="total" type="number">
                 </div>
                 <div class="form-check ml-3 mb-3">
                     <input class="form-check-input" type="radio" name="status" id="paid" checked v-model="is_paid" value="1">
@@ -44,7 +44,7 @@
               </div>
               <hr>
               <div class="form-group d-flex">
-                  <label for="invoiceid" class="col-md-2">Total</label>
+                  <label for="invoiceid" class="col-md-2">Search by</label>
                   <v-select  class="vselect" :options="products" label="name" @input="selectByName" v-model="inputName"></v-select>
               </div>
               <hr>
@@ -188,8 +188,9 @@ export default {
                 this.date='';
                 this.note='';
                 this.total='';
+                this.$emit('getSupplyInvoice')  
                 this.$emit('getProductSupply')                
-                this.$emit('getSupplyInvoice')                
+                              
             })
             .catch(error =>{
             console.log(error);

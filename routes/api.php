@@ -17,6 +17,7 @@ use App\Models\LotInfo;
 use App\Models\Category;
 use App\Models\Invoice;
 use App\Models\Product;
+use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\SupplierInvoice;
 use phpDocumentor\Reflection\PseudoTypes\False_;
@@ -62,17 +63,51 @@ Route::get('/category/check/{value}', function ($value) {
 });
 
 Route::get('/productsupply/{id}', function ($id) {
-    return Product::with('category', 'subCategory')->get()->where('supplier_id', $id);
+    return Product::where('supplier_id', $id)->with('category', 'subCategory')->get();
 });
 
+Route::get('/lowproduct/{id}', function ($id) {
+    return Product::where('supplier_id', $id)->with('lotInfos')->get();
+});
 
+Route::get('/cinvoice/{id}', function ($id) {
+    return Invoice::where('customer_id', $id)->get();
+});
 
-Route::post('supplierup', function ($id) {
-    $supplier = Supplier::find($id->id);
-    $supplier->name = $id->name;
-    $supplier->company = $id->company;
-    $supplier->phone_number = $id->phone_number;
+Route::post('/cusedit', function (Request $request) {
+    $customer = Customer::find($request->id);
+    $customer->name = $request->name;
+    $customer->phone_number = $request->number;
+    $customer->description = $request->description;
+    $customer->save();
+    return true;
+});
+
+Route::get('/invoice-payment/{id}', function ($id) {
+    $supplierInvoice = SupplierInvoice::find($id);
+    $supplierInvoice->is_paid = '1';
+    $supplierInvoice->save();
+    return true;
+});
+
+Route::get('/cinvoice-payment/{id}', function ($id) {
+    $invoice = Invoice::find($id);
+    $invoice->is_paid = '1';
+    $invoice->save();
+    return true;
+});
+
+Route::get('/supplylot/{id}', function ($id) {
+    return LotInfo::where('supplier_invoice_id', $id)->with('product')->get();
+});
+
+Route::post('supplierup', function (Request $request) {
+    $supplier = Supplier::find($request->id);
+    $supplier->name = $request->name;
+    $supplier->company = $request->company;
+    $supplier->phone_number = $request->phone_number;
     $supplier->save();
+    return true;
 });
 
 Route::resources([

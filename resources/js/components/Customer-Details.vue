@@ -1,24 +1,46 @@
 <template>
-<!-- Main content -->
+        <!-- Main content -->
     <section class="content">
 
-        <!-- Content Header (Page header) -->
-        <div class="content-header">
-            <div class="container-fluid">
-                <div class="row mb-2">
-                    <div class="col-sm-6">
-                        <h1 class="m-0">Invoices</h1>
-                    </div><!-- /.col -->
-                    <div class="col-sm-6">
-                        <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Invoices List</li>
-                        </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+    <!-- Content Header (Page header) -->
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h1 class="m-0">Customer Details</h1>
+                </div><!-- /.col -->
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><router-link to="/customer" >Customer List</router-link></li>
+                        <li class="breadcrumb-item active">Customer Details</li>
+                    </ol>
+                </div><!-- /.col -->
+            </div><!-- /.row -->
+        </div><!-- /.container-fluid -->
+    </div>
+
+    <!-- /.content-header -->
+    <div class="card p-3">
+         <div class="form-group d-flex">
+            <label for="name" class="col-md-4">Customer  Name</label>
+            <input type="text" class="form-control col-md-8" id="name"  placeholder="Enter Name" v-model="cname"  readonly>
         </div>
-        <div class="card p-3">
+        <div class="form-group d-flex">
+            <label for="pnumber" class="col-md-4">Phone Number</label>
+            <input type="text" class="form-control col-md-8" id="pnumber" placeholder="Phone Number" v-model="pnumber"  readonly>
+        </div>
+        <div class="form-group d-flex">
+            <label for="des" class="col-md-4">Description</label>
+            <input type="text" class="form-control col-md-8" id="des" placeholder="Description" v-model="des"  readonly>
+        </div>
+        <div class="form-group d-flex">
+            <label class="col-md-4"></label>
+        <a class="btn btn-primary" href="#" role="button" v-b-modal.modal-customer-edit>Edit</a>
+        </div>
+    </div>
+
+    <!-- /.content-header -->
+     <div class="card p-3">
             <vue-bootstrap-table
                 :columns="columns"
                 :values="values"
@@ -27,9 +49,8 @@
                 :sortable="true"
                 :paginated="true"
                 :multi-column-sortable="true"
-                :default-order-column="columnToSortBy"
                 :default-order-direction="false"
-                :row-click-handler="handleRowFunction"
+                :row-click-handler="handleRow"
             >
             </vue-bootstrap-table>
             <b-modal ref="invoice_pre" size="lg" ok-only no-stacking>
@@ -155,15 +176,17 @@
                 </div>
             </b-modal>
         </div>
+        <CustomerEdit @getCustomer="getCustomer" @getInvoice="getInvoice"/>
     </section>
 </template>
 
 <script>
 import VueBootstrapTable from "vue2-bootstrap-table2";
-
+import CustomerEdit from './modals/Customer-Edit.vue';
 export default {
     components: {
         VueBootstrapTable: VueBootstrapTable,
+        CustomerEdit
     },
     data() {
         return {
@@ -199,15 +222,35 @@ export default {
                     editable: false,
                 },
             ],
-            values: [],
+            values: [],            
             itemData: [],
-            columnToSortBy: "Id",
-            handleRowFunction: this.handleRow,
+            sDetails:[],
+            cname:'',
+            pnumber:'',
+            des:''
         };
     },
-    methods: {
-        handleRow(event, entry) {
-            this.$refs["invoice_pre"].show();
+    methods:{
+        getCustomer() {
+            this.values=[];
+            axios
+                .get("/api/customer/" +this.$route.params.id)
+                .then((response) => {
+                    this.cname = response.data[0].name;
+                    this.pnumber = response.data[0].phone_number;
+                    this.des = response.data[0].description;
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        handleRowFunction(event, entry) {
+            this.$router.push('customer/'+entry["id"]) 
+            
+        },
+         handleRow(event, entry) {
+            
             axios
                 .get("/api/invoiceItem/" + entry["Id"])
                 .then((response) => {
@@ -238,7 +281,7 @@ export default {
         getInvoice() {
             this.values=[];
             axios
-                .get("/api/invoice")
+                .get("/api/cinvoice/"+this.$route.params.id)
                 .then((response) => {
                     response.data.forEach((idata) => {
                         var date = new Date(idata.created_at);
@@ -255,7 +298,6 @@ export default {
                             ":" +
                             ("00" + date.getSeconds()).slice(-2);
 
-                            
                              let paid = "Unpaid";
                             if (idata.is_paid) {
                                 paid= "Paid"
@@ -266,7 +308,7 @@ export default {
                             Discount: idata.discount,
                             Total: idata.total,
                             Date: dateStr,
-                            "Is Paid":paid
+                            "Is Paid": paid,
                         });
                     });
                 })
@@ -291,9 +333,12 @@ export default {
                     console.log(error);
                 });
         },
+       
     },
     mounted: function () {
         this.getInvoice();
+        this.getCustomer();
+        
     },
-};
+}
 </script>

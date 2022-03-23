@@ -70,9 +70,9 @@ class SupplierInvoiceController extends Controller
      * @param  \App\Models\SupplierInvoice  $supplierInvoice
      * @return \Illuminate\Http\Response
      */
-    public function show(SupplierInvoice $supplierInvoice)
+    public function show($supplierInvoice)
     {
-        //
+        return SupplierInvoice::find($supplierInvoice);
     }
 
     /**
