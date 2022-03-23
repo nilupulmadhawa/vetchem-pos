@@ -53,7 +53,6 @@ export const routes = [
         component: SupplierInfo,
         name: "SupplierInfo"
     },
-
     {
         path: '/customer',
         component: Customer,
