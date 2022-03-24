@@ -156,7 +156,6 @@
                 </div>
             </b-modal>
             <b-modal ref="returnqty" size="sm" @ok="handleSubmit" ok-only no-stacking>
-                <div class="card">
                         
                     <form ref="form" @submit.stop.prevent="handleSubmit">
                         <b-form-group
@@ -176,7 +175,6 @@
                         ></b-form-input>
                         </b-form-group>
                     </form>
-                </div>
             </b-modal>
         </div>
     </section>
@@ -330,8 +328,13 @@ export default {
                     qty: this.rnqty,
                 })
                 .then(response =>{
-                    console.log(response.data);   
+                    console.log(response.data);  
+                    if (response.data) {
+                        alert('Return Successful');
+                        this.getInvoice();
+                    } 
                     this.rnqty = 0;            
+                    this.nid = 0;            
                 })
                 .catch(error =>{
                 console.log(error);
