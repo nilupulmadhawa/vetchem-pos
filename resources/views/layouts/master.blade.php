@@ -40,7 +40,7 @@
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
             <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
-            
+
         </div>
         @endif
 
@@ -92,28 +92,17 @@
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
                             <i class="fas fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">15</span>
+                            <span class="badge badge-warning navbar-badge">{{sizeof($data)}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <span class="dropdown-item dropdown-header">{{sizeof($data)}} Notifications</span>
+                            @foreach ($data as $d)
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> 8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-file mr-2"></i> 3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
+                            <router-link class="dropdown-item" to="/edit-product/{{$d->product->id}}" class="nav-link ">
+                                <i class="fas fa-info-circle mr-2"></i> {{$d->product->code}} - {{$d->product->name}}
+                                <span class="float-right text-muted text-sm">QTY: {{$d->qty}}</span>
+                            </router-link>
+                            @endforeach
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -136,7 +125,7 @@
                 <!-- Brand Logo -->
                 <a href="dashboard.html" class="brand-link">
                     <img src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    
+
                     <span class="brand-text font-weight-light">VET CHEM</span>
                 </a>
 
@@ -146,7 +135,7 @@
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
                             <img src="{{asset('dist/img/user2-160x160.png')}}" class="img-circle elevation-2" alt="User Image">
-                        </div> 
+                        </div>
                         <div class="info">
                             <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                         </div>

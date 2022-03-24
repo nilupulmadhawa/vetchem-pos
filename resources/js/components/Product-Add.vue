@@ -11,7 +11,7 @@
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><router-link to="/dashboard" >Dashboard</router-link></li>
                             <li class="breadcrumb-item active">Product Add</li>
                         </ol>
                     </div><!-- /.col -->
@@ -228,6 +228,16 @@ import QtyType from './modals/QtyType.vue';
 
             },
             getCategory(){
+                axios.get('/api/category')
+                .then(response =>{
+                    this.categoryData =response.data;
+                    // console.log(this.categoryData);       
+                })
+                .catch(error =>{
+                console.log(error);
+                })
+            },
+            getProduct(){
                 axios.get('/api/category')
                 .then(response =>{
                     this.categoryData =response.data;

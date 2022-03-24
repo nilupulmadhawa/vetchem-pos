@@ -74,6 +74,7 @@
             </div>
           </form>
         </div>
+        <router-link :to="'/edit-product/' + id" >Edit Product</router-link>
     </b-modal>
     </div>
 </template>

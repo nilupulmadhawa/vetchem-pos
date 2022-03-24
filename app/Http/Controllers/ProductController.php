@@ -73,7 +73,7 @@ class ProductController extends Controller
      */
     public function show($product)
     {
-        return Product::where('id', $product)->get();
+        return Product::where('id', $product)->with('category', 'subCategory')->get();
         // return Product::find($product);
     }
 
@@ -97,7 +97,30 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+        $product->name = $request->name;
+        $product->code = $request->code;
+        $product->qty_type = $request->qty_type;
+        $product->re_order_level = $request->orderLevel;
+        $product->re_order_qty = $request->orderQty;
+        $product->description = $request->description;
+        $product->status = $request->status;
+        $product->category_id  = $request->category;
+        $product->sub_category_id  = $request->subCategory;
+        $product->brand_id  = $request->brand;
+        $product->supplier_id   = $request->supplier;
+        $product->save();
+
+        foreach ($request->barcode as $code) {
+            $barcode = new Barcode;
+            $barcode->barcode = $code;
+            $barcode->product_id = $product->id;
+            $barcode->save();
+        }
+
+        return [
+            'isAdded' => true,
+            'error' => '',
+        ];
     }
 
     /**

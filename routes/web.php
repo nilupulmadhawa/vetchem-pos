@@ -24,6 +24,7 @@ Route::get('/dashboard', [App\Http\Controllers\DashboardController::class, 'inde
 
 Route::get('/invoice/print/{invoiceId}', [InvoiceController::class, 'printInvoice']);
 
-Route::any('{any}', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::any('/{any}', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 Route::any('supply/{any}', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
 Route::any('customer/{any}', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');
+Route::any('edit-product/{any}', [App\Http\Controllers\DashboardController::class, 'index'])->name('dashboard');

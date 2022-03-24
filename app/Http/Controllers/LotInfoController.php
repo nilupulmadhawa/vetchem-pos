@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\LotInfo;
 use Illuminate\Http\Request;
 
+
+
 class LotInfoController extends Controller
 {
     /**
@@ -91,8 +93,12 @@ class LotInfoController extends Controller
      * @param  \App\Models\LotInfo  $lotInfo
      * @return \Illuminate\Http\Response
      */
-    public function destroy(LotInfo $lotInfo)
+    public function destroy($id)
     {
-        //
+        $lotInfo = LotInfo::find($id);
+        // dd($product);
+        $lotInfo->delete();
+
+        return true;
     }
 }

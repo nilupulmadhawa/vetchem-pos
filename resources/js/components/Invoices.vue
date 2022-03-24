@@ -74,13 +74,14 @@
                                     <td class="right">{{ item.qty }}</td>
                                     <td class="center">{{ item.discount }}</td>
                                     <td class="right">{{ item.sale_price }}</td>
+                                    <td class="right"><button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return <br></button><span v-if="item.rqty != 0">{{ item.rqty }} Returnd</span></td>
                                 </tr>
                             </tbody>
                         </table>
 
                         <div class="row">
-                            <div class="col-lg-4 col-sm-5"></div>
-                            <div class="col-lg-4 col-sm-5 ml-auto">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4 ml-auto">
                                 <table class="table table-clear">
                                     <tbody>
                                         <tr>
@@ -154,6 +155,29 @@
                     <button v-if="!this.itemData.is_paid" class="btn btn-primary " style="width: 100px;" @click="setPayment">Pay</button>
                 </div>
             </b-modal>
+            <b-modal ref="returnqty" size="sm" @ok="handleSubmit" ok-only no-stacking>
+                <div class="card">
+                        
+                    <form ref="form" @submit.stop.prevent="handleSubmit">
+                        <b-form-group
+                        label="Return Qty"
+                        label-for="rnqty-input"
+                        invalid-feedback="Category name is already exists"
+                        :state="rnqtyState"
+                        >
+                        <b-form-input
+                            id="rnqty-input"
+                            v-model="rnqty"
+                            :state="rnqtyState"
+                            type="number"
+                            :max="this.qty"
+                            min="0"
+                            required
+                        ></b-form-input>
+                        </b-form-group>
+                    </form>
+                </div>
+            </b-modal>
         </div>
     </section>
 </template>
@@ -201,6 +225,10 @@ export default {
             ],
             values: [],
             itemData: [],
+            rnqty:0,
+            qty:0,
+            nid:0,
+            rnqtyState:'',
             columnToSortBy: "Id",
             handleRowFunction: this.handleRow,
         };
@@ -212,7 +240,6 @@ export default {
                 .get("/api/invoiceItem/" + entry["Id"])
                 .then((response) => {
                     this.itemData = response.data;
-                    console.log(this.itemData);
                     this.$refs["invoice_pre"].show();
                 })
                 .catch((error) => {
@@ -291,6 +318,30 @@ export default {
                     console.log(error);
                 });
         },
+        returnBox(q,id){
+            this.qty = q;
+            this.nid = id;
+            this.$refs["returnqty"].show();
+        },
+        handleSubmit(){
+            if (this.rnqty <= this.qty && this.rnqty >0) {
+                 axios.post('/api/returnqty', {
+                    id: this.nid,
+                    qty: this.rnqty,
+                })
+                .then(response =>{
+                    console.log(response.data);   
+                    this.rnqty = 0;            
+                })
+                .catch(error =>{
+                console.log(error);
+                })
+            }else{
+                alert('Invalid input')
+                this.rnqty = 0;
+            }
+           
+        }
     },
     mounted: function () {
         this.getInvoice();

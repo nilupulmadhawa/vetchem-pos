@@ -12,14 +12,17 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\QtyTypeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierInvoiceController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
 use App\Models\Category;
 use App\Models\Invoice;
+use App\Models\InvoiceItem;
 use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\SupplierInvoice;
+use Carbon\Carbon;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 
 /*
@@ -33,8 +36,33 @@ use phpDocumentor\Reflection\PseudoTypes\False_;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
+});
+
+Route::get('/analytics', function () {
+    $data = [];
+    $day = DB::table('invoices')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereDay('created_at', Carbon::now()->day)
+        ->sum('total');
+
+    $data += ['day' => $day];
+
+    $month = DB::table('invoices')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('total');
+    $data += ['month' => $month];
+
+    $year = DB::table('invoices')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('total');
+    $data += ['year' => $year];
+
+    return  $data;
 });
 
 Route::get('/product-info/{id}', function ($id) {
@@ -107,6 +135,35 @@ Route::post('supplierup', function (Request $request) {
     $supplier->company = $request->company;
     $supplier->phone_number = $request->phone_number;
     $supplier->save();
+    return true;
+});
+
+Route::post('/returnqty', function (Request $request) {
+    $invoiceItem = InvoiceItem::find($request->id);
+    $temqty = $invoiceItem->qty;
+    $invoiceItem->qty = $temqty - $request->qty;
+    $temrqty = $invoiceItem->rqty;
+    $invoiceItem->rqty = $temrqty + $request->qty;
+    $temstotal =  ($invoiceItem->qty * $invoiceItem->price) - $invoiceItem->discount;
+    if ($temstotal < 0) {
+        $temstotal = 0;
+    }
+    $invoiceItem->sale_price = $temstotal;
+    $invoiceItem->save();
+
+    $lotInfo = LotInfo::find($invoiceItem->lot_info_id);
+    $templqty = $lotInfo->qty;
+    $lotInfo->qty = $templqty + $request->qty;
+    $lotInfo->save();
+
+    $invoice = Invoice::find($invoiceItem->invoice_id);
+    $temtotal = $invoice->total;
+    $tempftotal = $temtotal - ($request->qty * $invoiceItem->price);
+    if ($tempftotal < 0) {
+        $tempftotal = 0;
+    }
+    $invoice->total = $tempftotal;
+    $invoice->save();
     return true;
 });
 
