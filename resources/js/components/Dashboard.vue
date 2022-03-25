@@ -44,7 +44,7 @@
                             <!-- small box -->
                             <div class="small-box bg-success">
                             <div class="inner">
-                                <h3>{{this.andata.month}}</sup></h3>
+                                <h3>{{this.andata.month}}</h3>
 
                                 <p>Monthly Sales</p>
                             </div>
