@@ -300,8 +300,9 @@ import Customer from './modals/Customer.vue';
                     alert('Already added');
                     this.inputName=[];
                 }else{
-                    axios.get('/api/product/'+value.id)
+                    axios.get('/api/product-info/'+value.id)
                     .then(response =>{
+                        console.log(response.data);
                         this.lots = response.data;
                         this.$refs['invoice_pre'].show();
                         this.inputName=[];

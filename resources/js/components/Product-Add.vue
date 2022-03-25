@@ -198,7 +198,7 @@ import QtyType from './modals/QtyType.vue';
                         status: this.status,
                     })
                         .then(response =>{
-                            console.log(response.data);
+                            // console.log(response.data);
                                 if (response.data.isAdded) {
                                     alert('Product insertion success.');
                                     this.name = "";
@@ -212,6 +212,7 @@ import QtyType from './modals/QtyType.vue';
                                     this.supplier = "";
                                     this.brand = "";
                                     this.description = "";
+                                    this.barcode=[];
                                     this.status = "Active";
 
                                 }else{
