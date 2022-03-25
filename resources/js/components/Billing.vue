@@ -328,7 +328,7 @@ import Customer from './modals/Customer.vue';
                     }else{
                         axios.get('/api/product-info/'+ob[0].id)
                         .then(response =>{
-                            this.lots = response.data;
+                            // this.lots = response.data;
                             this.$refs['invoice_pre'].show();
                             this.inputCode="";
                         })
