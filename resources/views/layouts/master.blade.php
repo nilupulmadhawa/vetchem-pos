@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AdminLTE 3 | Dashboard</title>
+    <title>VET CHEM</title>
+    {{-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />--}}
+    {{-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />--}}
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -27,18 +29,20 @@
     <!-- summernote -->
     <link rel=" stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
 
-    <script defer src=" {{ mix('js/app.js') }}">
-    </script>
+    <script defer src=" {{ mix('js/app.js') }}"></script>
 
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
 
+        @if(Route::current()->getName() == 'dashboard')
         <!-- Preloader -->
         <div class="preloader flex-column justify-content-center align-items-center">
-            <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
+            <img class="animation__shake" src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTELogo" height="60" width="60">
+
         </div>
+        @endif
 
         <div id="app">
             <!-- Navbar -->
@@ -49,10 +53,15 @@
                         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
                     </li>
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="index3.html" class="nav-link">Home</a>
+                        <router-link active-class="active" to="/product-list" class="nav-link ">
+                            Product List
+                        </router-link>
                     </li>
+
                     <li class="nav-item d-none d-sm-inline-block">
-                        <a href="#" class="nav-link">Contact</a>
+                        <router-link active-class="active" to="/billing" class="nav-link ">
+                            Billing
+                        </router-link>
                     </li>
                 </ul>
 
@@ -82,29 +91,18 @@
                     <!-- Notifications Dropdown Menu -->
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
-                            <i class="far fa-bell"></i>
-                            <span class="badge badge-warning navbar-badge">15</span>
+                            <i class="fas fa-bell"></i>
+                            <span class="badge badge-warning navbar-badge">{{sizeof($data)}}</span>
                         </a>
                         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                            <span class="dropdown-item dropdown-header">15 Notifications</span>
+                            <span class="dropdown-item dropdown-header">{{sizeof($data)}} Notifications</span>
+                            @foreach ($data as $d)
                             <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-envelope mr-2"></i> 4 new messages
-                                <span class="float-right text-muted text-sm">3 mins</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-users mr-2"></i> 8 friend requests
-                                <span class="float-right text-muted text-sm">12 hours</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                                <i class="fas fa-file mr-2"></i> 3 new reports
-                                <span class="float-right text-muted text-sm">2 days</span>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-                        </div>
+                            <router-link class="dropdown-item" to="/edit-product/{{$d->product->id}}" class="nav-link ">
+                                <i class="fas fa-info-circle mr-2"></i> {{$d->product->code}} - {{$d->product->name}}
+                                <span class="float-right text-muted text-sm">QTY: {{$d->qty}}</span>
+                            </router-link>
+                            @endforeach
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" data-widget="fullscreen" href="#" role="button">
@@ -125,9 +123,10 @@
             <!-- Main Sidebar Container -->
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
-                <a href="index3.html" class="brand-link">
-                    <img src="dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-                    <span class="brand-text font-weight-light">AdminLTE 3</span>
+                <a href="dashboard.html" class="brand-link">
+                    <img src="{{asset('dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
+
+                    <span class="brand-text font-weight-light">VET CHEM</span>
                 </a>
 
                 <!-- Sidebar -->
@@ -135,10 +134,10 @@
                     <!-- Sidebar user panel (optional) -->
                     <div class="user-panel mt-3 pb-3 mb-3 d-flex">
                         <div class="image">
-                            <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
+                            <img src="{{asset('dist/img/user2-160x160.png')}}" class="img-circle elevation-2" alt="User Image">
                         </div>
                         <div class="info">
-                            <a href="#" class="d-block">Alexander Pierce</a>
+                            <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                         </div>
                     </div>
 
@@ -214,12 +213,30 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/supplier" class="nav-link ">
+                                    <i class="fas fa-shopping-cart nav-icon"></i>
+                                    <p>Supplier</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/customer" class="nav-link ">
+                                    <i class="fas fa-users nav-icon"></i>
+                                    <p>Customer</p>
+                                </router-link>
+                            </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/report" class="nav-link ">
+                                    <i class="fas fa-sticky-note nav-icon"></i>
+                                    <p>Report</p>
+                                </router-link>
+                            </li>
                             <hr style="border-color:#ffff; border: size 3px;" />
                             <li class="nav-item">
 
                                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():document.getElementById('logout-form');">
                                     <i class="nav-icon fas fa-sign-out-alt"></i>
-                                    {{ __('Logout') }}
+                                    <p>{{ __('Logout') }}</p>
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none" onsubmit="return confirm('Do you want to logout?');">

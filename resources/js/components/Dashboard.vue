@@ -11,8 +11,7 @@
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item active">Invoice</li>
+                        <li class="breadcrumb-item active">Dashboard</li>
                     </ol>
                 </div><!-- /.col -->
             </div><!-- /.row -->
@@ -21,12 +20,55 @@
 
     <!-- /.content-header -->
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
-                <div class="card-header">Example Dashboard</div>
 
                 <div class="card-body">
-                    I'm an example Dashboard.
+
+                    <div class="row d-flex justify-content-center">
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-info">
+                            <div class="inner">
+                                <h3>{{this.andata.day}}</h3>
+
+                                <p>Today Sales</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-success">
+                            <div class="inner">
+                                <h3>{{this.andata.month}}</h3>
+
+                                <p>Monthly Sales</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        <div class="col-lg-3 col-6">
+                            <!-- small box -->
+                            <div class="small-box bg-warning">
+                            <div class="inner">
+                                <h3>{{this.andata.year}}</h3>
+
+                                <p>Yearly Sales</p>
+                            </div>
+                            <div class="icon">
+                                <i class="ion ion-stats-bars"></i>
+                            </div>
+                            </div>
+                        </div>
+                        <!-- ./col -->
+                        </div>
                 </div>
             </div>
         </div>
@@ -37,6 +79,27 @@
 
 <script>
     export default {
+        data() {
+            return {
+                andata:[]
+            }
+        },
+        methods:{
+            getAnalytics() {
+                this.values=[];
+                axios
+                    .get("/api/analytics")
+                    .then((response) => {
+                        this.andata = response.data
+                    })
 
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            },
+        },
+    mounted() {
+            this.getAnalytics()
+        },
     }
 </script>
