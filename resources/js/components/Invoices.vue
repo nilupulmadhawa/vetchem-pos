@@ -74,7 +74,10 @@
                                     <td class="right">{{ item.qty }}</td>
                                     <td class="center">{{ item.discount }}</td>
                                     <td class="right">{{ item.sale_price }}</td>
-                                    <td class="right"><button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return <br></button><span v-if="item.rqty != 0">{{ item.rqty }} Returnd</span></td>
+                                    <td class="right d-flex flex-column">
+                                        <button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return </button>
+                                        <span class="text-danger" v-if="item.rqty != 0">{{ item.rqty }} Returnd</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

@@ -95,6 +95,10 @@
                                     <td class="right">{{ item.qty }}</td>
                                     <td class="center">{{ item.discount }}</td>
                                     <td class="right">{{ item.sale_price }}</td>
+                                    <td class="right d-flex flex-column">
+                                        <button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return </button>
+                                        <span class="text-danger" v-if="item.rqty != 0">{{ item.rqty }} Returnd</span>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -175,6 +179,27 @@
                     <button v-if="!this.itemData.is_paid" class="btn btn-primary " style="width: 100px;" @click="setPayment">Pay</button>
                 </div>
             </b-modal>
+            <b-modal ref="returnqty" size="sm" @ok="handleSubmit" ok-only no-stacking>
+                        
+                    <form ref="form" @submit.stop.prevent="handleSubmit">
+                        <b-form-group
+                        label="Return Qty"
+                        label-for="rnqty-input"
+                        invalid-feedback="Category name is already exists"
+                        :state="rnqtyState"
+                        >
+                        <b-form-input
+                            id="rnqty-input"
+                            v-model="rnqty"
+                            :state="rnqtyState"
+                            type="number"
+                            :max="this.qty"
+                            min="0"
+                            required
+                        ></b-form-input>
+                        </b-form-group>
+                    </form>
+            </b-modal>
         </div>
         <CustomerEdit @getCustomer="getCustomer" @getInvoice="getInvoice"/>
     </section>
@@ -227,7 +252,11 @@ export default {
             sDetails:[],
             cname:'',
             pnumber:'',
-            des:''
+            des:'',
+            rnqty:0,
+            qty:0,
+            nid:0,
+            rnqtyState:'',
         };
     },
     methods:{
@@ -255,7 +284,7 @@ export default {
                 .get("/api/invoiceItem/" + entry["Id"])
                 .then((response) => {
                     this.itemData = response.data;
-                    console.log(this.itemData);
+                    // console.log(this.itemData);
                     this.$refs["invoice_pre"].show();
                 })
                 .catch((error) => {
@@ -333,6 +362,35 @@ export default {
                     console.log(error);
                 });
         },
+        returnBox(q,id){
+            this.qty = q;
+            this.nid = id;
+            this.$refs["returnqty"].show();
+        },
+        handleSubmit(){
+            if (this.rnqty <= this.qty && this.rnqty >0) {
+                 axios.post('/api/returnqty', {
+                    id: this.nid,
+                    qty: this.rnqty,
+                })
+                .then(response =>{
+                    console.log(response.data);  
+                    if (response.data) {
+                        alert('Return Successful');
+                        this.getInvoice();
+                    } 
+                    this.rnqty = 0;            
+                    this.nid = 0;            
+                })
+                .catch(error =>{
+                console.log(error);
+                })
+            }else{
+                alert('Invalid input')
+                this.rnqty = 0;
+            }
+           
+        }
        
     },
     mounted: function () {
