@@ -25,6 +25,7 @@ return new class extends Migration
             $table->decimal('pay_amount', 10, 2);
             $table->decimal('balance', 10, 2);
             $table->boolean('is_paid')->default(true);
+            $table->dateTime('paid_at')->nullable();
             $table->foreignIdFor(User::class)->constrained('users');
             $table->foreignIdFor(Customer::class)->constrained('customers');
             $table->timestamps();

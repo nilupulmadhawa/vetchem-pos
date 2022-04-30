@@ -112,8 +112,8 @@
                             <div class="form-group d-flex">
                                 <label for="Name" class="col-md-4">Status</label>
                                 <select class="custom-select" id="supp" v-model="status">
-                                        <option value="Acive" selected>Acive</option>
-                                        <option value="Inacive">Inacive</option>
+                                        <option value="Acive" selected>Active</option>
+                                        <option value="Inacive">Inactive</option>
                                 </select>
                             </div>
                         </div>

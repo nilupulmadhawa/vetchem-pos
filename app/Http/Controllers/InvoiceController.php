@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\LotInfo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class InvoiceController extends Controller
 {
@@ -44,7 +45,11 @@ class InvoiceController extends Controller
         foreach ($request->items as $item) {
             $product = Product::find($item['id']);
             $LotInfo = LotInfo::find($item['lotId']);
-            if ($product->productname !=  $item['name'] && $LotInfo->r_price !=  $item['price']) {
+            $ipr = $item['price'];
+            if ($item['preturn']) {
+                $ipr = -$item['price'];
+            }
+            if ($product->productname !=  $item['name'] && $LotInfo->r_price !=  $ipr) {
                 return [
                     'isAdded' => false,
                     'error' => 'Item not match',
@@ -84,8 +89,13 @@ class InvoiceController extends Controller
         $invoice->pay_amount = $request->payAmount;
         $invoice->balance = $request->balance;
         $invoice->is_paid = $request->is_paid;
+        if ($request->is_paid) {
+            $invoice->paid_at = Carbon::now();
+        }
+
         $invoice->customer_id = $request->cusid;
         $invoice->user_id = 1;
+
         $invoice->save();
 
         foreach ($request->items as $item) {

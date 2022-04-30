@@ -8,6 +8,7 @@
     {{-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap/dist/css/bootstrap.min.css" />--}}
     {{-- <link type="text/css" rel="stylesheet" href="//unpkg.com/bootstrap-vue@latest/dist/bootstrap-vue.min.css" />--}}
     <link rel="stylesheet" href="{{ mix('css/app.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}" />
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     <!-- Font Awesome -->
@@ -28,6 +29,7 @@
     <link rel=" stylesheet" href="{{ asset('plugins/daterangepicker/daterangepicker.css') }}">
     <!-- summernote -->
     <link rel=" stylesheet" href="{{ asset('plugins/summernote/summernote-bs4.min.css') }}">
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
 
     <script defer src=" {{ mix('js/app.js') }}"></script>
 
@@ -231,7 +233,19 @@
                                     <p>Report</p>
                                 </router-link>
                             </li>
+                            <li class="nav-item">
+                                <router-link active-class="active" to="/cashinout" class="nav-link ">
+                                    <i class="fas fa-upload nav-icon"></i>
+                                    <p>Cash In/Out</p>
+                                </router-link>
+                            </li>
                             <hr style="border-color:#ffff; border: size 3px;" />
+                            <li class="nav-item">
+                                <a active-class="active" href="/endofday" class="nav-link ">
+                                    <i class="fas fa-window-close nav-icon"></i>
+                                    <p>End of day</p>
+                                </a>
+                            </li>
                             <li class="nav-item">
 
                                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():document.getElementById('logout-form');">
@@ -307,8 +321,8 @@
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.js') }}"></script>
     <!-- AdminLTE for demo purposes -->
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="{{ asset('dist/js/demo.js') }}"></script>
-
 </body>
 
 </html>

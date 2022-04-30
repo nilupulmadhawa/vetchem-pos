@@ -17,4 +17,8 @@ class Supplier extends Model
     {
         return $this->hasMany(LotInfo::class);
     }
+    public function products()
+    {
+        return $this->hasMany(Product::class);
+    }
 }

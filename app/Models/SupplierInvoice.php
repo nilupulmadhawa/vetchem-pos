@@ -9,7 +9,7 @@ class SupplierInvoice extends Model
 {
     use HasFactory;
 
-    public function suppliers()
+    public function supplier()
     {
         return $this->belongsTo(Supplier::class);
     }

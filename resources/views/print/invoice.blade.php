@@ -168,13 +168,13 @@
         </div>
 
         <div id="company" class="clearfix ">
-            
-                <!-- <div>THUSHARA CELLULAR SERVICE</div> -->
-                <div>Madampe rd, Kuliyapitiya.Sri Lanka</div>
-                <div>Branches: Chilaw rd,Malwana,Wariyapola.</div>
-                <div>Tel :077 7236829 / 0372057564</div>
-                <!-- <div>E-mail :<a href="#">thusharacom4@gmail.com</a></div> -->
-            
+
+            <!-- <div>THUSHARA CELLULAR SERVICE</div> -->
+            <div>Madampe rd, Kuliyapitiya.Sri Lanka</div>
+            <div>Branches: Chilaw rd,Malwana,Wariyapola.</div>
+            <div>Tel :077 7236829 / 0372057564</div>
+            <!-- <div>E-mail :<a href="#">thusharacom4@gmail.com</a></div> -->
+
         </div>
         <div id="project">
             <div><span>INVOICE NO :</span> #{{$data->id}}</div>
@@ -187,9 +187,6 @@
                 <tr>
                     <div class="mt-4">
                         <div class="row text-600 text-white bgc-default-tp1 py-25">
-                            <th>
-                                <div class="d-none d-sm-block col-1">#</div>
-                            </th>
                             <th>
                                 <div class="col-9 col-sm-3">Description</div>
                             </th>
@@ -216,9 +213,12 @@
                     var i = 1;
                     x.invoice_items.forEach(items => {
                         document.write("<tr>");
-                        document.write("<td>" + i + "</td>");
-                        document.write("<td>" + items['name'] + "</td>");
-                        document.write("<td>" + items['qty'] + "</td>");
+                        document.write("<td style='text-align: start;''>" + items['name'] + "</td>");
+                        if (items['qty'] % 1 == 0) {
+                            document.write("<td>" + Math.round(items['qty']) + "</td>");
+                        } else {
+                            document.write("<td>" + items['qty'] + "</td>");
+                        }
                         document.write("<td>" + items['discount'] + "</td>");
                         document.write("<td>" + items['price'] + "</td>");
                         document.write("<td>" + items['sale_price'] + "</td>");
@@ -241,19 +241,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td colspan="5">SUBTOTAL</td>
+                    <td colspan="4">SUBTOTAL</td>
                     <td class="total">{{$data->sub_total}}</td>
                 </tr>
                 <tr>
-                    <td colspan="5">DISCOUNT</td>
+                    <td colspan="4">DISCOUNT</td>
                     <td class="total">{{$data->discount}}</td>
                 </tr>
                 <tr>
-                    <td colspan="5" class="grand total">GRAND TOTAL</td>
+                    <td colspan="4" class="grand total">GRAND TOTAL</td>
                     <td class="grand total" style="font-size: 13px;"><strong>{{$data->total}}</strong></td>
                 </tr>
                 <tr>
-                    <td colspan="5" class="grand total">Cash Balance</td>
+                    <td colspan="4" class="grand total">Cash Balance</td>
                     <td class="grand total" style="font-size: 13px;">{{$data->balance}}</td>
                 </tr>
             </tbody>
@@ -278,10 +278,10 @@
         </div>
     </main>
     <script>
-        window.addEventListener("load", window.print());
+        // window.addEventListener("load", window.print());
         window.onafterprint = function(event) {
             // alert(document.referrer);
-            window.location.href = document.referrer;
+            // window.location.href = document.referrer;
             // window.history.back();
         };
     </script>

@@ -1,22 +1,29 @@
 <template>
-<!-- Main content -->
+    <!-- Main content -->
     <section class="content">
-
         <!-- Content Header (Page header) -->
         <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
                         <h1 class="m-0">Invoices</h1>
-                    </div><!-- /.col -->
+                    </div>
+                    <!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Invoices List</li>
+                            <li class="breadcrumb-item">
+                                <a href="#">Home</a>
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Invoices List
+                            </li>
                         </ol>
-                    </div><!-- /.col -->
-                </div><!-- /.row -->
-            </div><!-- /.container-fluid -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
         </div>
         <div class="card p-3">
             <vue-bootstrap-table
@@ -44,7 +51,9 @@
                                 v-if="this.itemData.is_paid"
                                 class="badge bg-success badge-pill px-25"
                                 >Paid</span
-                            ><span v-else class="badge bg-warning badge-pill px-25"
+                            ><span
+                                v-else
+                                class="badge bg-warning badge-pill px-25"
                                 >Unpaid</span
                             >
                         </div>
@@ -74,10 +83,10 @@
                                     <td class="right">{{ item.qty }}</td>
                                     <td class="center">{{ item.discount }}</td>
                                     <td class="right">{{ item.sale_price }}</td>
-                                    <td class="right d-flex flex-column">
+                                    <!-- <td class="right d-flex flex-column">
                                         <button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return </button>
                                         <span class="text-danger" v-if="item.rqty != 0">{{ item.rqty }} Returnd</span>
-                                    </td>
+                                    </td> -->
                                 </tr>
                             </tbody>
                         </table>
@@ -155,18 +164,30 @@
                         class="btn btn-secondary"
                         ><i class="fas fa-print text-white"></i> Print</a
                     >
-                    <button v-if="!this.itemData.is_paid" class="btn btn-primary " style="width: 100px;" @click="setPayment">Pay</button>
+                    <button
+                        v-if="!this.itemData.is_paid"
+                        class="btn btn-primary"
+                        style="width: 100px"
+                        @click="setPayment"
+                    >
+                        Pay
+                    </button>
                 </div>
             </b-modal>
-            <b-modal ref="returnqty" size="sm" @ok="handleSubmit" ok-only no-stacking>
-                        
-                    <form ref="form" @submit.stop.prevent="handleSubmit">
-                        <b-form-group
+            <b-modal
+                ref="returnqty"
+                size="sm"
+                @ok="handleSubmit"
+                ok-only
+                no-stacking
+            >
+                <form ref="form" @submit.stop.prevent="handleSubmit">
+                    <b-form-group
                         label="Return Qty"
                         label-for="rnqty-input"
                         invalid-feedback="Category name is already exists"
                         :state="rnqtyState"
-                        >
+                    >
                         <b-form-input
                             id="rnqty-input"
                             v-model="rnqty"
@@ -176,8 +197,8 @@
                             min="0"
                             required
                         ></b-form-input>
-                        </b-form-group>
-                    </form>
+                    </b-form-group>
+                </form>
             </b-modal>
         </div>
     </section>
@@ -226,10 +247,10 @@ export default {
             ],
             values: [],
             itemData: [],
-            rnqty:0,
-            qty:0,
-            nid:0,
-            rnqtyState:'',
+            rnqty: 0,
+            qty: 0,
+            nid: 0,
+            rnqtyState: "",
             columnToSortBy: "Id",
             handleRowFunction: this.handleRow,
         };
@@ -264,7 +285,7 @@ export default {
             return dateStr;
         },
         getInvoice() {
-            this.values=[];
+            this.values = [];
             axios
                 .get("/api/invoice")
                 .then((response) => {
@@ -283,18 +304,17 @@ export default {
                             ":" +
                             ("00" + date.getSeconds()).slice(-2);
 
-                            
-                             let paid = "Unpaid";
-                            if (idata.is_paid) {
-                                paid= "Paid"
-                            }
+                        let paid = "Unpaid";
+                        if (idata.is_paid) {
+                            paid = "Paid";
+                        }
                         this.values.push({
                             Id: idata.id,
                             "Sub total": idata.sub_total,
                             Discount: idata.discount,
                             Total: idata.total,
                             Date: dateStr,
-                            "Is Paid":paid
+                            "Is Paid": paid,
                         });
                     });
                 })
@@ -303,51 +323,51 @@ export default {
                     console.log(error);
                 });
         },
-        setPayment(){
-             axios
+        setPayment() {
+            axios
                 .get("/api/cinvoice-payment/" + this.itemData.id)
                 .then((response) => {
-                    if(response.data){
+                    if (response.data) {
                         alert("Paid Successful");
                         this.getInvoice();
                         this.$nextTick(() => {
                             this.$refs["invoice_pre"].hide();
-                        })
+                        });
                     }
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
-        returnBox(q,id){
+        returnBox(q, id) {
             this.qty = q;
             this.nid = id;
             this.$refs["returnqty"].show();
         },
-        handleSubmit(){
-            if (this.rnqty <= this.qty && this.rnqty >0) {
-                 axios.post('/api/returnqty', {
-                    id: this.nid,
-                    qty: this.rnqty,
-                })
-                .then(response =>{
-                    console.log(response.data);  
-                    if (response.data) {
-                        alert('Return Successful');
-                        this.getInvoice();
-                    } 
-                    this.rnqty = 0;            
-                    this.nid = 0;            
-                })
-                .catch(error =>{
-                console.log(error);
-                })
-            }else{
-                alert('Invalid input')
+        handleSubmit() {
+            if (this.rnqty <= this.qty && this.rnqty > 0) {
+                axios
+                    .post("/api/returnqty", {
+                        id: this.nid,
+                        qty: this.rnqty,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                        if (response.data) {
+                            alert("Return Successful");
+                            this.getInvoice();
+                        }
+                        this.rnqty = 0;
+                        this.nid = 0;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else {
+                alert("Invalid input");
                 this.rnqty = 0;
             }
-           
-        }
+        },
     },
     mounted: function () {
         this.getInvoice();

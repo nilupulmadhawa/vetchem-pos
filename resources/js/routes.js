@@ -9,6 +9,8 @@ import SupplierInfo from './components/Supplier-Info.vue';
 import Customer from './components/Customer.vue';
 import CustomerDetails from './components/Customer-Details.vue';
 import ProductEdit from "./components/Product-Edit.vue";
+import Cashinout from "./components/Cashinout.vue";
+import Report from "./components/Report.vue";
 export const routes = [
     {
         path: '/invoices',
@@ -71,4 +73,16 @@ export const routes = [
         component: ProductEdit,
         name: "ProductEdit"
     },
+
+    {
+        path: '/cashinout',
+        component: Cashinout,
+        name: "Cashinout"
+    },
+
+    {
+        path: '/report',
+        component: Report,
+        name: "Report"
+    }
 ]; 

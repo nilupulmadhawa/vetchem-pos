@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LotInfo;
+use App\Models\StartingCash;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
@@ -27,6 +28,15 @@ class DashboardController extends Controller
      */
     public function index()
     {
+        $today = StartingCash::whereYear('created_at', Carbon::now()->year)
+            ->whereMonth('created_at', Carbon::now()->month)
+            ->whereDay('created_at', Carbon::now()->day)->latest()->first();
+        if ($today === null) {
+            return  redirect('/startofday');
+        }
+        if ($today->end_of_day >= 0) {
+            return  redirect('/startofday');
+        }
         $data = LotInfo::where('exp', '<=', date('Y-m-d'))->with('product')->get();
         // return  $data;
         return view('dashboard')->with('data', $data);

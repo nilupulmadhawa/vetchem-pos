@@ -37,6 +37,6 @@ class Product extends Model
 
     public function supplier()
     {
-        return $this->belongsTo(BranSupplierd::class);
+        return $this->belongsTo(Supplier::class);
     }
 }

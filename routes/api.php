@@ -12,6 +12,8 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\QtyTypeController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\SupplierInvoiceController;
+use App\Http\Controllers\StartingCashController;
+use App\Http\Controllers\CashInOutController;
 use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\DB;
 use App\Models\LotInfo;
@@ -22,6 +24,7 @@ use App\Models\Product;
 use App\Models\Customer;
 use App\Models\Supplier;
 use App\Models\SupplierInvoice;
+use App\Models\CashInOut;
 use Carbon\Carbon;
 use phpDocumentor\Reflection\PseudoTypes\False_;
 
@@ -98,6 +101,10 @@ Route::get('/lowproduct/{id}', function ($id) {
     return Product::where('supplier_id', $id)->with('lotInfos')->get();
 });
 
+Route::get('/lowproduct', function () {
+    return Product::with('lotInfos', 'supplier', 'category', 'subCategory')->get();
+});
+
 Route::get('/cinvoice/{id}', function ($id) {
     return Invoice::where('customer_id', $id)->get();
 });
@@ -121,6 +128,8 @@ Route::get('/invoice-payment/{id}', function ($id) {
 Route::get('/cinvoice-payment/{id}', function ($id) {
     $invoice = Invoice::find($id);
     $invoice->is_paid = '1';
+    $invoice->paid_at = Carbon::now();
+
     $invoice->save();
     return true;
 });
@@ -136,6 +145,22 @@ Route::post('supplierup', function (Request $request) {
     $supplier->phone_number = $request->phone_number;
     $supplier->save();
     return true;
+});
+
+Route::get('/lastGrn', function () {
+    return SupplierInvoice::latest()->first();
+});
+
+Route::post('/grnReport', function (Request $request) {
+    return SupplierInvoice::where('updated_at', '>=', $request->grnsdate)->where('updated_at', '<=', $request->grnedate)->with('supplier')->get();
+});
+
+Route::post('/salesReport', function (Request $request) {
+    return Invoice::where('updated_at', '>=', $request->ssdate)->where('updated_at', '<=', $request->sedate)->with('customer')->get();
+});
+
+Route::post('/cioreport', function (Request $request) {
+    return CashInOut::where('updated_at', '>=', $request->csdate)->where('updated_at', '<=', $request->cedate)->get();
 });
 
 Route::post('/returnqty', function (Request $request) {
@@ -178,4 +203,6 @@ Route::resources([
     'qtytype' => QtyTypeController::class,
     'customer' => CustomerController::class,
     'supplier-invoice' => SupplierInvoiceController::class,
+    'cashinout' => CashInOutController::class,
+    'startingcashes' => StartingCashController::class
 ]);
