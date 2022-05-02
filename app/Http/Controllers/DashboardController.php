@@ -8,6 +8,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Artisan;
 
 class DashboardController extends Controller
 {
@@ -19,6 +20,10 @@ class DashboardController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+    }
+
+    public function download()
+    {
     }
 
     /**

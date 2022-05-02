@@ -25,6 +25,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::get('/download', [App\Http\Controllers\DashboardController::class, 'download'])->name('download');
 Route::post('/startofdayadd', [App\Http\Controllers\StartingCashController::class, 'store'])->name('startofdayadd');
 Route::post('/endofdayadd', [App\Http\Controllers\StartingCashController::class, 'endstore'])->name('endofdayadd');
 Route::get('/endofday', [App\Http\Controllers\StartingCashController::class, 'end'])->name('endofday');

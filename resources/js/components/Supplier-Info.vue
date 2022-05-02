@@ -37,7 +37,7 @@
                     class="form-control col-md-8"
                     id="name"
                     placeholder="Enter Name"
-                    v-model="sDetails[0].name"
+                    v-model="sDetails.name"
                     readonly
                 />
             </div>
@@ -48,7 +48,7 @@
                     class="form-control col-md-8"
                     id="company"
                     placeholder="company"
-                    v-model="sDetails[0].company"
+                    v-model="sDetails.company"
                     readonly
                 />
             </div>
@@ -59,7 +59,7 @@
                     class="form-control col-md-8"
                     id="phone_number"
                     placeholder="phone_number"
-                    v-model="sDetails[0].phone_number"
+                    v-model="sDetails.phone_number"
                     readonly
                 />
             </div>
@@ -90,6 +90,7 @@
                         autocomplete="off"
                         v-model="seen"
                         value="inlist"
+                        checked
                     />
                     Goods Received Note
                 </label>
@@ -99,7 +100,6 @@
                         name="options"
                         id="option1"
                         autocomplete="off"
-                        checked
                         v-model="seen"
                         value="lqty"
                     />
@@ -446,7 +446,7 @@ export default {
         },
         handleRowFunction2(event, entry) {
             axios
-                .get("/api/supplier-invoice/" + entry["id"])
+                .get("/api/supplier-invoice/" + entry["GRN No"])
                 .then((response) => {
                     this.invoiceDetails = response.data;
                     axios
@@ -494,7 +494,9 @@ export default {
             axios
                 .get("/api/supplier/" + this.$route.params.id)
                 .then((response) => {
-                    this.sDetails = response.data;
+                    this.sDetails.name = response.data[0].name;
+                    this.sDetails.company = response.data[0].company;
+                    this.sDetails.phone_number = response.data[0].phone_number;
                 })
                 .catch((error) => {
                     console.log(error);

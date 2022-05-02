@@ -19,7 +19,7 @@ return new class extends Migration
             $table->id();
             $table->decimal('initial_qty', 10, 3);
             $table->decimal('qty', 10, 3);
-            $table->date('mfd');
+            $table->date('mfd')->nullable();
             $table->date('exp');
             $table->decimal('cost', 10, 2);
             $table->decimal('r_price', 10, 2);

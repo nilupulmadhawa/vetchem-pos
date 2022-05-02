@@ -16,7 +16,7 @@ return new class extends Migration
     {
         Schema::create('supplier_invoices', function (Blueprint $table) {
             $table->id();
-            $table->string('s_invoice_no', 30)->unique();
+            $table->string('s_invoice_no', 30);
             $table->string('note', 100)->nullable();
             $table->decimal('total', 10, 2);
             $table->boolean('is_paid')->default(true);

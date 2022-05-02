@@ -44,6 +44,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/explist', function () {
+    $a = LotInfo::where("exp", "<=", Carbon::now()->addMonths(6))->with('product')->get();
+    // dd($a);
+    return
+        $a;
+});
+
 Route::get('/analytics', function () {
     $data = [];
     $day = DB::table('invoices')

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LotInfo;
+use App\Models\CashInOut;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 
@@ -96,8 +98,16 @@ class LotInfoController extends Controller
     public function destroy($id)
     {
         $lotInfo = LotInfo::find($id);
+        $product = Product::find($lotInfo->product_id);
+
+        $cashInOut = new CashInOut;
+        $cashInOut->type = 'cashin';
+        $cashInOut->amount = $lotInfo->qty * $lotInfo->cost;
+        $cashInOut->description = 'Delete product code:' . $product->code . ' /QTY:' . $lotInfo->qty . ' /cost:' . $lotInfo->cost . ' /EXP:' . $lotInfo->exp;
+        $cashInOut->save();
         // dd($product);
         $lotInfo->delete();
+
 
         return true;
     }

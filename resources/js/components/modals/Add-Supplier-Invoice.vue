@@ -3,7 +3,7 @@
         <b-modal
             id="modal-add-sup-invoice"
             ref="modal"
-            title="Add Invoice"
+            title="Add GRN"
             size="xl"
             @show="resetModal"
             @hidden="resetModal"
@@ -13,7 +13,7 @@
                 <div class="d-flex">
                     <div class="col-md-6">
                         <div class="form-group d-flex">
-                            <label for="grnNo" class="col-md-2">GRN No</label>
+                            <label for="grnNo" class="col-md-2">GRN No*</label>
                             <input
                                 id="grnNo"
                                 class="form-control"
@@ -24,7 +24,7 @@
                         </div>
                         <div class="form-group d-flex">
                             <label for="invoiceid" class="col-md-2"
-                                >Invoice_No</label
+                                >Invoice_No*</label
                             >
                             <input
                                 class="form-control"
@@ -52,7 +52,7 @@
                         </div>
                         <div class="form-group d-flex">
                             <label for="invoiceid" class="col-md-2"
-                                >Total</label
+                                >Total*</label
                             >
                             <input
                                 class="form-control"
@@ -71,7 +71,7 @@
                                 value="1"
                             />
                             <label class="form-check-label col-md-5" for="paid">
-                                Paid
+                                Paid*
                             </label>
                             <input
                                 class="form-check-input"
@@ -85,7 +85,7 @@
                                 class="form-check-label col-md-5"
                                 for="unpaid"
                             >
-                                Credit
+                                Credit*
                             </label>
                         </div>
                     </div>
@@ -106,14 +106,14 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">code</th>
-                                <th scope="col">name</th>
-                                <th scope="col">Qty</th>
+                                <th scope="col">code*</th>
+                                <th scope="col">name*</th>
+                                <th scope="col">Qty*</th>
                                 <th scope="col">MFD</th>
-                                <th scope="col">EXP</th>
-                                <th scope="col">Cost</th>
-                                <th scope="col">R_Price</th>
-                                <th scope="col">W_Price</th>
+                                <th scope="col">EXP*</th>
+                                <th scope="col">Cost*</th>
+                                <th scope="col">R_Price*</th>
+                                <th scope="col">W_Price*</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -202,7 +202,11 @@ export default {
                 .get("/api/lastGrn")
                 .then((response) => {
                     // console.log(response);
-                    this.grnNo = response.data["id"] + 1;
+                    if (response.data == "") {
+                        this.grnNo = 1000;
+                    } else {
+                        this.grnNo = response.data["id"] + 1;
+                    }
                 })
                 .catch((error) => {
                     console.log(error);
@@ -276,41 +280,75 @@ export default {
             this.nameState = null;
         },
         handleSubmit() {
-            axios
-                .post("/api/supplier-invoice", {
-                    supId: this.$route.params.id,
-                    items: this.items,
-                    inviceId: this.inviceId,
-                    date: this.date,
-                    note: this.note,
-                    is_paid: this.is_paid,
-                    total: this.total,
-                })
-                .then((response) => {
-                    console.log(response.data);
-                    this.items = [];
-                    this.inviceId = "";
-                    this.date = "";
-                    this.note = "";
-                    this.total = "";
-                    this.$emit("getSupplyInvoice");
-                    this.$emit("getProductSupply");
-                    this.getLastGrn();
-                })
-                .catch((error) => {
-                    console.log(error);
+            if (
+                this.grnNo != "" &&
+                this.inviceId != "" &&
+                this.is_paid != "" &&
+                this.total != "" &&
+                this.items != ""
+            ) {
+                let err = true;
+                this.items.forEach((item) => {
+                    if (
+                        item.id != "" &&
+                        item.code != "" &&
+                        item.name != "" &&
+                        item.qty != "" &&
+                        item.exp != "" &&
+                        item.cost != "" &&
+                        item.rprice != "" &&
+                        item.wprice != ""
+                    ) {
+                    } else {
+                        err = false;
+                    }
                 });
-            // Exit when the form isn't valid
-            if (!this.checkFormValidity()) {
-                return;
-            }
-            // Push the name to submitted names
+                if (err) {
+                    axios
+                        .post("/api/supplier-invoice", {
+                            id: this.grnNo,
+                            supId: this.$route.params.id,
+                            items: this.items,
+                            inviceId: this.inviceId,
+                            date: this.date,
+                            note: this.note,
+                            is_paid: this.is_paid,
+                            total: this.total,
+                        })
+                        .then((response) => {
+                            console.log(response.data);
+                            if (response.data.isAdded) {
+                                alert("Added Successful");
+                                this.items = [];
+                                this.inviceId = "";
+                                this.date = "";
+                                this.note = "";
+                                this.total = "";
+                                this.$emit("getSupplyInvoice");
+                                this.$emit("getProductSupply");
+                                this.getLastGrn();
+                            }
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                    // Exit when the form isn't valid
+                    if (!this.checkFormValidity()) {
+                        return;
+                    }
+                    // Push the name to submitted names
 
-            this.submittedNames.push(this.name);
-            // Hide the modal manually
-            this.$nextTick(() => {
-                this.$bvModal.hide("modal-add-sup-invoice");
-            });
+                    this.submittedNames.push(this.name);
+                    // Hide the modal manually
+                    this.$nextTick(() => {
+                        this.$bvModal.hide("modal-add-sup-invoice");
+                    });
+                } else {
+                    alert(" Please fill in all the required fields");
+                }
+            } else {
+                alert(" Please fill in all the required fields");
+            }
         },
     },
     mounted: function () {

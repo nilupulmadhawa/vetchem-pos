@@ -278,10 +278,10 @@
         </div>
     </main>
     <script>
-        // window.addEventListener("load", window.print());
+        window.addEventListener("load", window.print());
         window.onafterprint = function(event) {
             // alert(document.referrer);
-            // window.location.href = document.referrer;
+            window.location.href = document.referrer;
             // window.history.back();
         };
     </script>

@@ -213,6 +213,12 @@
                                             <p>Product List</p>
                                         </router-link>
                                     </li>
+                                    <li class="nav-item">
+                                        <router-link active-class="active" to="/product-exp" class="nav-link ">
+                                            <i class="far fa-circle nav-icon"></i>
+                                            <p>Expiration Product</p>
+                                        </router-link>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
@@ -246,6 +252,12 @@
                                     <p>End of day</p>
                                 </a>
                             </li>
+                            <!-- <li class="nav-item">
+                                <a active-class="active" href="/download" class="nav-link ">
+                                    <i class="fas fa-window-close nav-icon"></i>
+                                    <p>backup</p>
+                                </a>
+                            </li> -->
                             <li class="nav-item">
 
                                 <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); confirm('Do you want to logout?') ?  document.getElementById('logout-form').submit():document.getElementById('logout-form');">

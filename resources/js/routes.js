@@ -2,6 +2,7 @@ import Invoices from './components/Invoices.vue';
 import Billing from './components/Billing.vue';
 import Dashboard from './components/Dashboard.vue';
 import ProductList from './components/Product-List.vue';
+import ProductExp from './components/Product-Exp.vue';
 import ProductAdd from './components/Product-Add.vue';
 import Productlowquantity from './components/Product-Low-Quantity.vue';
 import Supplier from './components/Supplier.vue';
@@ -84,5 +85,10 @@ export const routes = [
         path: '/report',
         component: Report,
         name: "Report"
+    },
+    {
+        path: '/product-exp',
+        component: ProductExp,
+        name: "ProductExp"
     }
 ]; 

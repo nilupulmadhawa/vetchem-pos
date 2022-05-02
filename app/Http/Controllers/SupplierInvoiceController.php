@@ -37,6 +37,7 @@ class SupplierInvoiceController extends Controller
     public function store(Request $request)
     {
         $supplierInvoice = new SupplierInvoice;
+        $supplierInvoice->id  = $request->id;
         $supplierInvoice->s_invoice_no  = $request->inviceId;
         $supplierInvoice->note = $request->note;
         $supplierInvoice->total = $request->total;

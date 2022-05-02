@@ -1,46 +1,82 @@
 <template>
-        <!-- Main content -->
+    <!-- Main content -->
     <section class="content">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Customer Details</h1>
+                    </div>
+                    <!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item">
+                                <router-link to="/customer"
+                                    >Customer List</router-link
+                                >
+                            </li>
+                            <li class="breadcrumb-item active">
+                                Customer Details
+                            </li>
+                        </ol>
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </div>
 
-    <!-- Content Header (Page header) -->
-    <div class="content-header">
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h1 class="m-0">Customer Details</h1>
-                </div><!-- /.col -->
-                <div class="col-sm-6">
-                    <ol class="breadcrumb float-sm-right">
-                        <li class="breadcrumb-item"><router-link to="/customer" >Customer List</router-link></li>
-                        <li class="breadcrumb-item active">Customer Details</li>
-                    </ol>
-                </div><!-- /.col -->
-            </div><!-- /.row -->
-        </div><!-- /.container-fluid -->
-    </div>
+        <!-- /.content-header -->
+        <div class="card p-3">
+            <div class="form-group d-flex">
+                <label for="name" class="col-md-4">Customer Name</label>
+                <input
+                    type="text"
+                    class="form-control col-md-8"
+                    id="name"
+                    placeholder="Enter Name"
+                    v-model="cname"
+                    readonly
+                />
+            </div>
+            <div class="form-group d-flex">
+                <label for="pnumber" class="col-md-4">Phone Number</label>
+                <input
+                    type="text"
+                    class="form-control col-md-8"
+                    id="pnumber"
+                    placeholder="Phone Number"
+                    v-model="pnumber"
+                    readonly
+                />
+            </div>
+            <div class="form-group d-flex">
+                <label for="des" class="col-md-4">Description</label>
+                <input
+                    type="text"
+                    class="form-control col-md-8"
+                    id="des"
+                    placeholder="Description"
+                    v-model="des"
+                    readonly
+                />
+            </div>
+            <div class="form-group d-flex">
+                <label class="col-md-4"></label>
+                <a
+                    class="btn btn-primary"
+                    href="#"
+                    role="button"
+                    v-b-modal.modal-customer-edit
+                    >Edit</a
+                >
+            </div>
+        </div>
 
-    <!-- /.content-header -->
-    <div class="card p-3">
-         <div class="form-group d-flex">
-            <label for="name" class="col-md-4">Customer  Name</label>
-            <input type="text" class="form-control col-md-8" id="name"  placeholder="Enter Name" v-model="cname"  readonly>
-        </div>
-        <div class="form-group d-flex">
-            <label for="pnumber" class="col-md-4">Phone Number</label>
-            <input type="text" class="form-control col-md-8" id="pnumber" placeholder="Phone Number" v-model="pnumber"  readonly>
-        </div>
-        <div class="form-group d-flex">
-            <label for="des" class="col-md-4">Description</label>
-            <input type="text" class="form-control col-md-8" id="des" placeholder="Description" v-model="des"  readonly>
-        </div>
-        <div class="form-group d-flex">
-            <label class="col-md-4"></label>
-        <a class="btn btn-primary" href="#" role="button" v-b-modal.modal-customer-edit>Edit</a>
-        </div>
-    </div>
-
-    <!-- /.content-header -->
-     <div class="card p-3">
+        <!-- /.content-header -->
+        <div class="card p-3">
             <vue-bootstrap-table
                 :columns="columns"
                 :values="values"
@@ -65,7 +101,9 @@
                                 v-if="this.itemData.is_paid"
                                 class="badge bg-success badge-pill px-25"
                                 >Paid</span
-                            ><span v-else class="badge bg-warning badge-pill px-25"
+                            ><span
+                                v-else
+                                class="badge bg-warning badge-pill px-25"
                                 >Unpaid</span
                             >
                         </div>
@@ -95,10 +133,6 @@
                                     <td class="right">{{ item.qty }}</td>
                                     <td class="center">{{ item.discount }}</td>
                                     <td class="right">{{ item.sale_price }}</td>
-                                    <td class="right d-flex flex-column">
-                                        <button v-if="item.qty > 0" class="btn btn-warning btn-sm " @click="returnBox( item.qty,item.id)">Return </button>
-                                        <span class="text-danger" v-if="item.rqty != 0">{{ item.rqty }} Returnd</span>
-                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -176,18 +210,30 @@
                         class="btn btn-secondary"
                         ><i class="fas fa-print text-white"></i> Print</a
                     >
-                    <button v-if="!this.itemData.is_paid" class="btn btn-primary " style="width: 100px;" @click="setPayment">Pay</button>
+                    <button
+                        v-if="!this.itemData.is_paid"
+                        class="btn btn-primary"
+                        style="width: 100px"
+                        @click="setPayment"
+                    >
+                        Pay
+                    </button>
                 </div>
             </b-modal>
-            <b-modal ref="returnqty" size="sm" @ok="handleSubmit" ok-only no-stacking>
-                        
-                    <form ref="form" @submit.stop.prevent="handleSubmit">
-                        <b-form-group
+            <b-modal
+                ref="returnqty"
+                size="sm"
+                @ok="handleSubmit"
+                ok-only
+                no-stacking
+            >
+                <form ref="form" @submit.stop.prevent="handleSubmit">
+                    <b-form-group
                         label="Return Qty"
                         label-for="rnqty-input"
                         invalid-feedback="Category name is already exists"
                         :state="rnqtyState"
-                        >
+                    >
                         <b-form-input
                             id="rnqty-input"
                             v-model="rnqty"
@@ -197,21 +243,21 @@
                             min="0"
                             required
                         ></b-form-input>
-                        </b-form-group>
-                    </form>
+                    </b-form-group>
+                </form>
             </b-modal>
         </div>
-        <CustomerEdit @getCustomer="getCustomer" @getInvoice="getInvoice"/>
+        <CustomerEdit @getCustomer="getCustomer" @getInvoice="getInvoice" />
     </section>
 </template>
 
 <script>
 import VueBootstrapTable from "vue2-bootstrap-table2";
-import CustomerEdit from './modals/Customer-Edit.vue';
+import CustomerEdit from "./modals/Customer-Edit.vue";
 export default {
     components: {
         VueBootstrapTable: VueBootstrapTable,
-        CustomerEdit
+        CustomerEdit,
     },
     data() {
         return {
@@ -247,23 +293,23 @@ export default {
                     editable: false,
                 },
             ],
-            values: [],            
+            values: [],
             itemData: [],
-            sDetails:[],
-            cname:'',
-            pnumber:'',
-            des:'',
-            rnqty:0,
-            qty:0,
-            nid:0,
-            rnqtyState:'',
+            sDetails: [],
+            cname: "",
+            pnumber: "",
+            des: "",
+            rnqty: 0,
+            qty: 0,
+            nid: 0,
+            rnqtyState: "",
         };
     },
-    methods:{
+    methods: {
         getCustomer() {
-            this.values=[];
+            this.values = [];
             axios
-                .get("/api/customer/" +this.$route.params.id)
+                .get("/api/customer/" + this.$route.params.id)
                 .then((response) => {
                     this.cname = response.data[0].name;
                     this.pnumber = response.data[0].phone_number;
@@ -275,11 +321,9 @@ export default {
                 });
         },
         handleRowFunction(event, entry) {
-            this.$router.push('customer/'+entry["id"]) 
-            
+            this.$router.push("customer/" + entry["id"]);
         },
-         handleRow(event, entry) {
-            
+        handleRow(event, entry) {
             axios
                 .get("/api/invoiceItem/" + entry["Id"])
                 .then((response) => {
@@ -308,9 +352,9 @@ export default {
             return dateStr;
         },
         getInvoice() {
-            this.values=[];
+            this.values = [];
             axios
-                .get("/api/cinvoice/"+this.$route.params.id)
+                .get("/api/cinvoice/" + this.$route.params.id)
                 .then((response) => {
                     response.data.forEach((idata) => {
                         var date = new Date(idata.created_at);
@@ -327,10 +371,10 @@ export default {
                             ":" +
                             ("00" + date.getSeconds()).slice(-2);
 
-                             let paid = "Unpaid";
-                            if (idata.is_paid) {
-                                paid= "Paid"
-                            }
+                        let paid = "Unpaid";
+                        if (idata.is_paid) {
+                            paid = "Paid";
+                        }
                         this.values.push({
                             Id: idata.id,
                             "Sub total": idata.sub_total,
@@ -346,57 +390,55 @@ export default {
                     console.log(error);
                 });
         },
-        setPayment(){
-             axios
+        setPayment() {
+            axios
                 .get("/api/cinvoice-payment/" + this.itemData.id)
                 .then((response) => {
-                    if(response.data){
+                    if (response.data) {
                         alert("Paid Successful");
                         this.getInvoice();
                         this.$nextTick(() => {
                             this.$refs["invoice_pre"].hide();
-                        })
+                        });
                     }
                 })
                 .catch((error) => {
                     console.log(error);
                 });
         },
-        returnBox(q,id){
+        returnBox(q, id) {
             this.qty = q;
             this.nid = id;
             this.$refs["returnqty"].show();
         },
-        handleSubmit(){
-            if (this.rnqty <= this.qty && this.rnqty >0) {
-                 axios.post('/api/returnqty', {
-                    id: this.nid,
-                    qty: this.rnqty,
-                })
-                .then(response =>{
-                    console.log(response.data);  
-                    if (response.data) {
-                        alert('Return Successful');
-                        this.getInvoice();
-                    } 
-                    this.rnqty = 0;            
-                    this.nid = 0;            
-                })
-                .catch(error =>{
-                console.log(error);
-                })
-            }else{
-                alert('Invalid input')
+        handleSubmit() {
+            if (this.rnqty <= this.qty && this.rnqty > 0) {
+                axios
+                    .post("/api/returnqty", {
+                        id: this.nid,
+                        qty: this.rnqty,
+                    })
+                    .then((response) => {
+                        console.log(response.data);
+                        if (response.data) {
+                            alert("Return Successful");
+                            this.getInvoice();
+                        }
+                        this.rnqty = 0;
+                        this.nid = 0;
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            } else {
+                alert("Invalid input");
                 this.rnqty = 0;
             }
-           
-        }
-       
+        },
     },
     mounted: function () {
         this.getInvoice();
         this.getCustomer();
-        
     },
-}
+};
 </script>

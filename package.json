@@ -37,6 +37,8 @@
         "vue-json-excel": "^0.3.0",
         "vue-router": "^3.5.3",
         "vue-select": "^3.18.3",
-        "vue2-bootstrap-table2": "^1.2.1"
+        "vue2-bootstrap-table2": "^1.2.1",
+        "vuetify": "^2.6.4",
+        "vuetify-toast-snackbar": "^0.6.1"
     }
 }
