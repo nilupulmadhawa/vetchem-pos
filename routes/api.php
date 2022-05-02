@@ -51,6 +51,16 @@ Route::get('/explist', function () {
         $a;
 });
 
+Route::get('/monthlyTotal', function () {
+    $data = Invoice::selectRaw(' monthname(updated_at) month, sum(total) total')
+        ->whereYear('updated_at', Carbon::now()->year)
+        ->groupBy('month')
+        ->orderBy('month', 'desc')
+        ->get();
+
+    return $data;
+});
+
 Route::get('/analytics', function () {
     $data = [];
     $day = DB::table('invoices')
