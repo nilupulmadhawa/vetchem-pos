@@ -52,8 +52,8 @@ Route::get('/explist', function () {
 });
 
 Route::get('/monthlyTotal', function () {
-    $data = Invoice::selectRaw(' monthname(updated_at) month, sum(total) total')
-        ->whereYear('updated_at', Carbon::now()->year)
+    $data = Invoice::selectRaw(' monthname(paid_at) month, sum(total) total')
+        ->whereYear('paid_at', Carbon::now()->year)
         ->groupBy('month')
         ->orderBy('month', 'desc')
         ->get();

@@ -23,6 +23,7 @@ return new class extends Migration
             $table->decimal('rqty', 10, 3)->default('0');
             $table->decimal('discount', 10, 2);
             $table->decimal('sale_price', 10, 2);
+            $table->decimal('profit', 10, 2);
             $table->unsignedBigInteger('lot_info_id');
             $table->unsignedBigInteger('invoice_id');
             $table->foreign('invoice_id')->references('id')->on("invoices")->onDelete('cascade');

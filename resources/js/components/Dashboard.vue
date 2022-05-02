@@ -76,7 +76,7 @@
         </div>
 
         <div class="row justify-content-center">
-            <div class="col-md-6 card">
+            <div class="col-md-6">
                 <apexchart
                     ref="chart1"
                     width="500"

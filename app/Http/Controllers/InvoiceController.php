@@ -109,6 +109,7 @@ class InvoiceController extends Controller
             $invoiceItem->discount = $item['discount'];
             $invoiceItem->sale_price = $item['salePrice'];
             $invoiceItem->lot_info_id = $item['lotId'];
+            $invoiceItem->profit = ($item['price'] -  $LotInfo->cost) * $item['qty'];
             $invoiceItem->invoice_id = $invoice->id;
             $invoiceItem->save();
 
