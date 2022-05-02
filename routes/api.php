@@ -85,6 +85,85 @@ Route::get('/analytics', function () {
     return  $data;
 });
 
+Route::get('/profitanalytics', function () {
+    $data = [];
+
+
+    $day = Invoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereDay('created_at', Carbon::now()->day)
+        ->sum('total');
+
+    $cashIn = CashInOut::where('type', 'cashin')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereDay('created_at', Carbon::now()->day)
+        ->sum('amount');
+
+    $cashOut = CashInOut::where('type', 'cashout')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereDay('created_at', Carbon::now()->day)
+        ->sum('amount');
+
+    $supplierInvoice = SupplierInvoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->whereDay('created_at', Carbon::now()->day)
+        ->sum('total');
+
+    $totald = ($day + $cashIn) - ($cashOut + $supplierInvoice);
+
+    $data += ['day' => $totald];
+
+
+    $month = Invoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('total');
+
+    $cashIn = CashInOut::where('type', 'cashin')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('amount');
+
+    $cashOut = CashInOut::where('type', 'cashout')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('amount');
+
+    $supplierInvoice = SupplierInvoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->whereMonth('created_at', Carbon::now()->month)
+        ->sum('total');
+
+    $totalm = ($month + $cashIn) - ($cashOut + $supplierInvoice);
+    $data += ['month' => $totalm];
+
+    $year = Invoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('total');
+
+    $cashIn = CashInOut::where('type', 'cashin')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('amount');
+
+    $cashOut = CashInOut::where('type', 'cashout')
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('amount');
+
+    $supplierInvoice = SupplierInvoice::where('is_paid', 1)
+        ->whereYear('created_at', Carbon::now()->year)
+        ->sum('total');
+    $totaly = ($year + $cashIn) - ($cashOut + $supplierInvoice);
+    $data += ['year' => $totaly];
+
+    return  $data;
+});
+
+
+
 Route::get('/product-info/{id}', function ($id) {
     return LotInfo::all()->where('product_id', $id);
 });

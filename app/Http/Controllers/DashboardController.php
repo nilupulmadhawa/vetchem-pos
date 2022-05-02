@@ -71,4 +71,29 @@ class DashboardController extends Controller
 
         return  $data;
     }
+
+    public function profitAn()
+    {
+        $data = [];
+        $day = DB::table('invoices')
+            ->whereYear('paid_at', Carbon::now()->year)
+            ->whereMonth('paid_at', Carbon::now()->month)
+            ->whereDay('paid_at', Carbon::now()->day)
+            ->sum('total');
+
+        $data += ['day' => $day];
+
+        $month = DB::table('invoices')
+            ->whereYear('paid_at', Carbon::now()->year)
+            ->whereMonth('paid_at', Carbon::now()->month)
+            ->sum('total');
+        $data += ['month' => $month];
+
+        $year = DB::table('invoices')
+            ->whereYear('paid_at', Carbon::now()->year)
+            ->sum('total');
+        $data += ['year' => $year];
+
+        return  $data;
+    }
 }

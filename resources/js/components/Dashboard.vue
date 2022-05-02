@@ -75,6 +75,60 @@
             </div>
         </div>
 
+        <!-- /.content-header -->
+        <div class="row justify-content-center" v-if="this.is_admin">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex justify-content-center">
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-info">
+                                    <div class="inner">
+                                        <h3>{{ this.prdata.day }}</h3>
+
+                                        <p>Today Sales</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-success">
+                                    <div class="inner">
+                                        <h3>{{ this.prdata.month }}</h3>
+
+                                        <p>Monthly Sales</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                            <div class="col-lg-3 col-6">
+                                <!-- small box -->
+                                <div class="small-box bg-warning">
+                                    <div class="inner">
+                                        <h3>{{ this.prdata.year }}</h3>
+
+                                        <p>Yearly Sales</p>
+                                    </div>
+                                    <div class="icon">
+                                        <i class="ion ion-stats-bars"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- ./col -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <apexchart
@@ -112,20 +166,44 @@ export default {
                 },
             ],
 
+            prdata: [],
             andata: [],
             chdata: [],
+            is_admin: false,
         };
     },
-    created: function () {
-        this.updateChart();
-    },
+    created: function () {},
     methods: {
+        getUser() {
+            this.values = [];
+            axios
+                .get("/api/user")
+                .then((response) => {
+                    console.log(response);
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         getAnalytics() {
             this.values = [];
             axios
                 .get("/api/analytics")
                 .then((response) => {
                     this.andata = response.data;
+                })
+
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
+        getProfitanAlytics() {
+            this.values = [];
+            axios
+                .get("/api/profitanalytics")
+                .then((response) => {
+                    this.prdata = response.data;
                 })
 
                 .catch((error) => {
@@ -147,7 +225,7 @@ export default {
                             data: data,
                         },
                     ]);
-                    console.log(this.chartOptions.xaxis.categories);
+                    // console.log(this.chartOptions.xaxis.categories);
                 })
 
                 .catch((error) => {
@@ -157,6 +235,8 @@ export default {
     },
     mounted() {
         this.getAnalytics();
+        this.getProfitanAlytics();
+        this.getUser();
         this.uChart();
     },
 };
