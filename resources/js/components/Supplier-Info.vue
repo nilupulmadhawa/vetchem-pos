@@ -210,8 +210,8 @@
                                 <th scope="col">MFD</th>
                                 <th scope="col">EXP</th>
                                 <th scope="col">Cost</th>
-                                <th scope="col">R_Price</th>
-                                <th scope="col">W_Price</th>
+                                <th scope="col">Printed_Price</th>
+                                <th scope="col">Price</th>
                             </tr>
                         </thead>
                         <tbody>

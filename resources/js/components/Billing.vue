@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <b-modal ref="invoice_pre" size="mg" ok-only no-stacking>
+        <b-modal ref="invoice_pre" size="lg" ok-only no-stacking>
             <div class="card">
                 <div class="card-header p-2">
                     <h4 class="mb-0">Item Batch Select</h4>
@@ -232,6 +232,7 @@
                                 <th class="center">Id</th>
                                 <th class="center">Expiry Data</th>
                                 <th class="center">Qty</th>
+                                <th class="center">Printed price</th>
                                 <th class="center">price</th>
                             </tr>
                         </thead>
@@ -241,6 +242,7 @@
                                 <td class="center">{{ lot.exp }}</td>
                                 <td class="center">{{ lot.qty }}</td>
                                 <td class="center">{{ lot.r_price }}</td>
+                                <td class="center">{{ lot.ws_price }}</td>
                                 <td class="center">
                                     <button
                                         class="btn btn-primary"
@@ -402,12 +404,12 @@ export default {
                     });
                     var rprice;
                     var preturn;
-                    console.log(this.preturn);
+                    // console.log(this.preturn);
                     if (this.preturn) {
-                        rprice = -response.data.r_price;
+                        rprice = -response.data.ws_price;
                         preturn = 1;
                     } else {
-                        rprice = response.data.r_price;
+                        rprice = response.data.ws_price;
                         preturn = 0;
                     }
                     this.items.push({
@@ -435,7 +437,7 @@ export default {
             axios
                 .get("/api/product-info/" + value.id)
                 .then((response) => {
-                    console.log(response.data);
+                    // console.log(response.data);
                     this.lots = response.data;
                     this.$refs["invoice_pre"].show();
                     this.inputName = [];

@@ -14,8 +14,8 @@
                             <th scope="col">#</th>
                             <th scope="col">Qty</th>
                             <th scope="col">EXP</th>
-                            <th scope="col">Retail Price</th>
-                            <th scope="col">Wholesale Price</th>
+                            <th scope="col">Printed Price</th>
+                            <th scope="col">Price</th>
                         </tr>
                     </thead>
                     <tbody>
