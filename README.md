@@ -2,7 +2,7 @@
 <h2 style="color:cyan">Installation</h2>
 <ul>
     <li>Clone the Repo: <br> </li>
-    <li style=""> > git clone https://github.com/dnmadhawa/tcs-pos.git</li>
+    <li style=""> > git clone https://github.com/nilupulmadhawa/vetchem-pos.git</li>
     <li> > cd tcs-pos</li>
     <li> > composer install</li>
     <li> > cp .env.example .env</li>
